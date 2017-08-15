@@ -1,9 +1,4 @@
-
-
-
 //地图功能
-
-    //var stations = null;
     var Map = {
         createMap:function(){
             map = new BMap.Map("citiBikeMap");    // 创建Map实例
@@ -15,7 +10,7 @@
             map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT}));//开启比例尺功能
             map.addControl(new BMap.NavigationControl());//开启缩放控件功能
              opts = {
-                width: 300,     // 信息窗口宽度
+                width: 350,     // 信息窗口宽度
                 height: 70,     // 信息窗口
                 enableMessage: true//设置允许信息窗发送短息
             };
@@ -25,8 +20,8 @@
             var points = [];  // 添加海量点数据
             for (var i = 0; i < data.length; i++) {
                 var marker = new BMap.Marker(new BMap.Point(data[i].longitude, data[i].latitude));
-                var content = "站点名称：" + data[i].station_name + "<br>" +
-                    "站点坐标：" + data[i].longitude + "," + data[i].latitude;
+                var content = "Station Name:" + data[i].station_name + "<br>" +
+                    "Station Lng&Lat:" + data[i].longitude + "," + data[i].latitude;
                 map.addOverlay(marker);               // 将标注添加到地图中
                 this.addClickHandler(content,marker);
             }

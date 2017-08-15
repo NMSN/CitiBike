@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-var sql ='select end_station_name as station_name,' + /*联表有问题*/
+var sql ='select end_station_name as station_name,' + /*获取站点集合联表有问题*/
         'end_station_latitude as latitude,' +
         'end_station_longitude as longitude ' +
         'from citibike_tripdata group by end_station_name;'
@@ -21,12 +21,21 @@ var sql ='select end_station_name as station_name,' + /*联表有问题*/
         'start_station_latitude as latitude,' +
         'start_station_longitude as longitude ' +
         'from citibike_tripdata group by start_station_name;'/*/
+var sql2 ='SELECT COUNT(*) AS num,' +
+        'DATE_FORMAT(start_time, "%Y-%m-%d" ) as date,' +
+        'DATE_FORMAT(start_time, "%H" ) as hour,' +
+        'DATE_FORMAT(start_time, "%W" ) as week' +
+        'FROM `citibike_tripdata`' +
+        'WHERE Gender=1 AND -- 区分男女' +
+        'DAYOFWEEK(start_time)!=1 AND ' +
+        'DAYOFWEEK(start_time)!=7 -- 区分工作日or周末' +
+        'GROUP BY DATE_FORMAT(start_time, "%Y-%m-%d %H" );  -- 按日期小时分组'
 var arr = [];
-connection.query(sql, function (error, results, fields) {
+connection.query(sql , function (error, results, fields) {
     if (error) throw error;
     for (var i = 0; i < results.length; i++) {
         arr[i] = results[i];
-        console.log(arr[i]);
+        //console.log(arr[i]);
     }
 });
 connection.end();
