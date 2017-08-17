@@ -39,22 +39,72 @@
             var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
             map.openInfoWindow(infoWindow,point); //开启信息窗口
         },
-
+        heatMap:function(){
+            heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
+            map.addOverlay(heatmapOverlay);
+            heatmapOverlay.setDataSet({data:points,max:100});//是否显示热力图
+            function openHeatmap(){
+                heatmapOverlay.show();
+            }
+            function closeHeatmap(){
+                heatmapOverlay.hide();
+            }//closeHeatmap();
+            function setGradient(){
+                /*格式如下所示:
+               {
+                     0:'rgb(102, 255, 0)',
+                     .5:'rgb(255, 170, 0)',
+                     1:'rgb(255, 0, 0)'
+               }*/
+                var gradient = {};
+                var colors = document.querySelectorAll("input[type='color']");
+                colors = [].slice.call(colors,0);
+                colors.forEach(function(ele){
+                    gradient[ele.getAttribute("data-key")] = ele.value;
+                });
+                heatmapOverlay.setOptions({"gradient":gradient});
+            }
+        },
         initMap:function(){
             this.createMap();
-
-        }
+        },
     };
     Map.initMap();
 
-    $(".button").bind("click",function(){
+    $("#stations").bind("click",function(){
         $.ajax({
             type: 'GET',
             url: 'http://127.0.0.1:8081/',
             data: 'stations',
             success: function(data){
                 alert("Request succeed.");
+                //data = JSON.parse(data);
                 Map.addMarker(data);
+            },
+            error: function(){
+                alert("Request failed.");
+            },
+            dataType: 'json',
+        });
+    });
+
+    var heatPoints = [];
+    $("#heatInfo").bind("click",function(){
+        $.ajax({
+            type: 'GET',
+            url: 'http://127.0.0.1:8081/',
+            data: 'heatInfo',
+            success: function(data){
+                alert("Request succeed.");
+                //data = JSON.parse(data);
+                //console.log(data);
+               for(var i = 0; i < data.length; i++) {
+                   heatPoints[i].lat = data[i].latitude;
+                   heatPoints[i].lng = data[i].longitude;
+                   heatPoints[i].count = 1;
+               }
+               console.log(heatPoints);
+
             },
             error: function(){
                 alert("Request failed.");

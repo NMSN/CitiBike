@@ -67,6 +67,22 @@ var Echarts= {
             ]
         };
         myChart.setOption(option);
+        $("#manWork").bind("click",function(){
+            $.ajax({
+                type: 'GET',
+                url: 'http://127.0.0.1:8081/',
+                data: 'manWork',
+                success: function(data){
+                    alert("Request succeed.");
+                    //data = JSON.parse(data);
+                    console.log(data);
+                },
+                error: function(){
+                    alert("Request failed.");
+                },
+                dataType: 'json',
+            });
+        });
     }
 };
     Echarts.initLineChart();
