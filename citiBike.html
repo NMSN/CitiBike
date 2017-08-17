@@ -6,6 +6,7 @@
     <title>Title</title>
 
     <script src="http://api.map.baidu.com/api?v=2.0&ak=cTPMvvh70cpFaigeCtpj6gXOefm0PplL"></script>
+    <script src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
     <script src="lib/jquery-3.2.1.js"></script>
     <script src="lib/bootstrap-3.3.7/js/bootstrap.js"></script>
     <script src="lib/echarts.min.js"></script>
@@ -28,11 +29,11 @@
 </head>
 <body>
     <div id ="citiBikeMap"></div>
-    <select>
-        <option value="1">1</option>
-    </select>
+
     <button id="stations">站点显示</button>
+
     <button id="heatInfo">借车情况显示</button>
+    <button id="heatInfoOff">借车情况隐藏</button>
 
     <button id="manWork">男性工作日情况</button>
     <div id="citiBikeEcharts"></div>
