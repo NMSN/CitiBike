@@ -26,6 +26,9 @@
                 this.addClickHandler(content,marker);
             }
         },
+        clearOverlays:function(){
+            map.clearOverlays();
+        },
 
         addClickHandler:function(content,marker){
             marker.addEventListener("click",function(e){
@@ -90,6 +93,10 @@
             },
             dataType: 'json',
         });
+    });
+
+    $("#stationsOff").bind("click",function(){
+        Map.clearOverlays();
     });
 
 
