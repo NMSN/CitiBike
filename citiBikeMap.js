@@ -9,7 +9,7 @@
             map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
             map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT}));//开启比例尺功能
             map.addControl(new BMap.NavigationControl());//开启缩放控件功能
-             opts = {
+            opts = {
                 width: 350,     // 信息窗口宽度
                 height: 70,     // 信息窗口
                 enableMessage: true//设置允许信息窗发送短息
@@ -76,64 +76,80 @@
             this.heatMap();
         },
     };
-    Map.initMap();
 
-    $("#stations").bind("click",function(){
+    Map.initMap();
+    var stations=[];
+    $(document).ready(function(){
         $.ajax({
             type: 'GET',
             url: 'http://127.0.0.1:8081/',
             data: 'stations',
-            success: function(data){
-                alert("Request succeed.");
-                //data = JSON.parse(data);
-                Map.addMarker(data);
-            },
+            dataType: 'json',
             error: function(){
                 alert("Request failed.");
             },
-            dataType: 'json',
+            success: function(data){
+                alert("Request succeed.");
+                //data = JSON.parse(data);
+                stations = data;
+            }
         });
-    });
-
-    $("#stationsOff").bind("click",function(){
-        Map.clearOverlays();
-    });
-
-
-    $("#heatInfo").bind("click",function(){
         $.ajax({
             type: 'GET',
             url: 'http://127.0.0.1:8081/',
             data: 'heatInfo',
+            dataType: 'json',
+            error: function(){
+                alert("Request failed.");
+            },
             success: function(data){
                 alert("Request succeed.");
                 //data = JSON.parse(data);
                 //console.log(data);
-               var heatPoints = [];
+                var heatPoints = [];
 
-               for(var i = 0; i < data.length; i++) {
-                   var heatPoint = {
-                       lat : '',
-                       lng : '',
-                       count: '',
-                   };
-                   heatPoint.lat = data[i].start_station_latitude;
-                   heatPoint.lng = data[i].start_station_longitude;
-                   heatPoint.count = 1;
-                   heatPoints.push(heatPoint);
-               }
-               console.log(heatPoints);
-               heatmapOverlay.setDataSet({data:heatPoints,max:1000});//是否显示热力图
-               Map.openHeatMap();
+                for(var i = 0; i < data.length; i++) {
+                    var heatPoint = {
+                        lat : '',
+                        lng : '',
+                        count: '',
+                    };
+                    heatPoint.lat = data[i].start_station_latitude;
+                    heatPoint.lng = data[i].start_station_longitude;
+                    heatPoint.count = data[i].count;
+                    heatPoints.push(heatPoint);
+                }
+                console.log(heatPoints);
+                heatmapOverlay.setDataSet({data:heatPoints,max:1500});
+                Map.closeHeatmap();
 
-            },
-            error: function(){
-                alert("Request failed.");
-            },
-            dataType: 'json',
+            }
         });
     });
 
+
+
+    $("#stations").bind("click",function(){
+        Map.addMarker(stations);
+    });
+
+    $("#stationsOff").bind("click",function(){
+        var allOverlay = map.getOverlays();
+        console.log(allOverlay);
+        for (var i = 0; i < allOverlay.length -1; i++){
+                map.removeOverlay(allOverlay[i]);
+        }
+    });
+
+    /*$("#allCoverOff").bind("click",function(){
+        Map.openHeatMap();
+        Map.clearOverlays();
+    });*/
+
+
+    $("#heatInfo").bind("click",function(){
+        Map.openHeatMap();
+    });
 
     $("#heatInfoOff").bind("click",function(){
         Map.closeHeatmap();

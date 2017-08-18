@@ -27,11 +27,13 @@ var sqlStations ='select end_station_id as station_id,' +
                 'start_station_longitude as longitude ' +
                 'from citibike_tripdata group by start_station_name;'
 
-var sqlHeatInfo = 'select start_station_id, ' +
-                'start_station_name, ' +
-                'start_station_latitude, ' +
+var sqlHeatInfo = 'select count(*) as count,' +
+                'start_station_id,' +
+                'start_station_name,' +
+                'start_station_latitude,' +
                 'start_station_longitude ' +
-                'from citibike_tripdata; '
+                'from citibike_tripdata ' +
+                'group by start_station_id;'
 
 var sqlManWork ='select count(*) as num,' +
                 'date_format(start_time, "%y-%m-%d" ) as date,' +
