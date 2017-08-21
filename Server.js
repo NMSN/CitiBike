@@ -36,14 +36,13 @@ var sqlHeatInfo = 'select count(*) as count,' +
                 'group by start_station_id;'
 
 var sqlManWork ='select count(*) as num,' +
-                'date_format(start_time, "%y-%m-%d" ) as date,' +
-                'date_format(start_time, "%h" ) as hour,' +
-                'date_format(start_time, "%w" ) as week ' +
+                'date_format(start_time, "%y-%m-%d %H" ) as date,' +
+                'date_format(start_time, "%W" ) as week ' +
                 'from citibike_tripdata ' +
                 'where gender=1 and ' +
                 'dayofweek(start_time)!=1 and ' +
                 'dayofweek(start_time)!=7 ' +
-                'group by date_format(start_time, "%y-%m-%d %h" ); '//男性工作日情况
+                'group by date_format(start_time, "%y-%m-%d %H" ); '//男性工作日情况
 
 var arrStations = [];
 var arrHeatInfo = [];

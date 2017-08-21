@@ -89,7 +89,7 @@
                 alert("Request failed.");
             },
             success: function(data){
-                alert("Request succeed.");
+                //alert("Request succeed.");
                 //data = JSON.parse(data);
                 stations = data;
             }
@@ -103,7 +103,7 @@
                 alert("Request failed.");
             },
             success: function(data){
-                alert("Request succeed.");
+                //alert("Request succeed.");
                 //data = JSON.parse(data);
                 //console.log(data);
                 var heatPoints = [];
