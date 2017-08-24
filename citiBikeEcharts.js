@@ -2,8 +2,8 @@
 
 
 var Echarts= {
-    initLineChart:function(data) {
-        var myChart = echarts.init(document.getElementById('citiBikeEcharts'));
+    initLineChart:function(id,title,data) {
+        var myChart = echarts.init(document.getElementById(id));
         var option = {
             tooltip: {
                 trigger: 'axis',
@@ -13,9 +13,9 @@ var Echarts= {
             },
             title: {
                 left: 'center',
-                text: '大数据量面积图',
+                text: title,
             },
-            toolbox: {
+           /* toolbox: {
                 feature: {
                     dataZoom: {
                         yAxisIndex: 'none'
@@ -23,7 +23,7 @@ var Echarts= {
                     restore: {},
                     saveAsImage: {}
                 }
-            },
+            },*/
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
@@ -79,15 +79,13 @@ var Echarts= {
         };
 
         myChart.setOption(option);
-        $("#manWork").bind("click",function(){
 
-        });
     }
 };
     //Echarts.initLineChart();
 
 $(document).ready(function() {
-    $.ajax({
+    $.ajax({//男性工作日
         type: 'GET',
         url: 'http://127.0.0.1:8081/',
         data: 'manWork',
@@ -110,9 +108,94 @@ $(document).ready(function() {
                 manWorks.week.push(data[i].week);
             }
             console.log(manWorks);
-            Echarts.initLineChart(manWorks);
+            $("#manWork").bind("click",function(){
+                Echarts.initLineChart("citiBikeEchartsManWork","manworks",manWorks);
+            });
+        }
+    });
 
+    $.ajax({//男性周末
+        type: 'GET',
+        url: 'http://127.0.0.1:8081/',
+        data: 'manRest',
+        dataType: 'json',
+        error: function () {
+            alert("Request failed.");
+        },
+        success: function (data) {
+            //alert("Request succeed.");
+            //data = JSON.parse(data);
+            var manRests = {
+                data:[],
+                date:[],
+                week:[]
+            };
+            for (var i = 0; i < data.length; i++) {
 
+                manRests.data.push(data[i].num);
+                manRests.date.push(data[i].date);
+                manRests.week.push(data[i].week);
+            }
+            console.log(manRests);
+            $("#manRest").bind("click",function(){
+                Echarts.initLineChart("citiBikeEchartsManRest","manrests",manRests);
+            });
+        }
+    });
+    $.ajax({//女性工作日
+        type: 'GET',
+        url: 'http://127.0.0.1:8081/',
+        data: 'womanWork',
+        dataType: 'json',
+        error: function () {
+            alert("Request failed.");
+        },
+        success: function (data) {
+            //alert("Request succeed.");
+            //data = JSON.parse(data);
+            var womanWorks = {
+                data:[],
+                date:[],
+                week:[]
+            };
+            for (var i = 0; i < data.length; i++) {
+
+                womanWorks.data.push(data[i].num);
+                womanWorks.date.push(data[i].date);
+                womanWorks.week.push(data[i].week);
+            }
+            console.log(womanWorks);
+            $("#womanWork").bind("click",function(){
+                Echarts.initLineChart("citiBikeEchartsWomanWork","womanwork",womanWorks);
+            });
+        }
+    });
+    $.ajax({//女性周末
+        type: 'GET',
+        url: 'http://127.0.0.1:8081/',
+        data: 'womanRest',
+        dataType: 'json',
+        error: function () {
+            alert("Request failed.");
+        },
+        success: function (data) {
+            //alert("Request succeed.");
+            //data = JSON.parse(data);
+            var womanRests = {
+                data:[],
+                date:[],
+                week:[]
+            };
+            for (var i = 0; i < data.length; i++) {
+
+                womanRests.data.push(data[i].num);
+                womanRests.date.push(data[i].date);
+                womanRests.week.push(data[i].week);
+            }
+            console.log(womanRests);
+            $("#womanRest").bind("click",function(){
+                Echarts.initLineChart("citiBikeEchartsWomanRest","womanrests",womanRests);
+            });
         }
     });
 });

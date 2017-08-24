@@ -3,7 +3,7 @@
         createMap:function(){
             map = new BMap.Map("citiBikeMap");    // 创建Map实例
             /*map是全局对象待解决*/
-            map.centerAndZoom(new BMap.Point(-73.866552,40.845546), 15);  // 初始化地图,设置中心点坐标和地图级别
+            map.centerAndZoom(new BMap.Point(-74.04424731,40.72759597), 15);  // 初始化地图,设置中心点坐标和地图级别
             map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
             map.setCurrentCity("纽约");          // 设置地图显示的城市 此项是必须设置的
             map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
@@ -44,7 +44,7 @@
         },
 
         heatMap:function(){
-            heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
+            heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":30});
             map.addOverlay(heatmapOverlay);
             //heatmapOverlay.setDataSet({data:points,max:100});//是否显示热力图
         },
@@ -120,7 +120,7 @@
                     heatPoints.push(heatPoint);
                 }
                 console.log(heatPoints);
-                heatmapOverlay.setDataSet({data:heatPoints,max:1500});
+                heatmapOverlay.setDataSet({data:heatPoints,max:1900});
                 Map.closeHeatmap();
 
             }

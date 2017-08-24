@@ -39,14 +39,45 @@ var sqlManWork ='select count(*) as num,' +
                 'date_format(start_time, "%y-%m-%d %H" ) as date,' +
                 'date_format(start_time, "%W" ) as week ' +
                 'from citibike_tripdata ' +
-                'where gender=1 and ' +
+                'where gender=1 and ' + //男性
+                'dayofweek(start_time)!=1 and ' +
+                'dayofweek(start_time)!=7 ' + //工作日
+                'group by date_format(start_time, "%y-%m-%d %H" ); '//男性工作日情况
+
+var sqlManRest ='select count(*) as num,' +
+                'date_format(start_time, "%y-%m-%d %H" ) as date,' +
+                'date_format(start_time, "%W" ) as week ' +
+                'from citibike_tripdata ' +
+                'where gender=1 and ' + //男性
+                'dayofweek(start_time)=1 or ' + //
+                'dayofweek(start_time)=7 ' +
+                'group by date_format(start_time, "%y-%m-%d %H" ); '//男性周末情况
+
+var sqlWomanWork ='select count(*) as num,' +
+                'date_format(start_time, "%y-%m-%d %H" ) as date,' +
+                'date_format(start_time, "%W" ) as week ' +
+                'from citibike_tripdata ' +
+                'where gender=2 and ' +
                 'dayofweek(start_time)!=1 and ' +
                 'dayofweek(start_time)!=7 ' +
-                'group by date_format(start_time, "%y-%m-%d %H" ); '//男性工作日情况
+                'group by date_format(start_time, "%y-%m-%d %H" ); '//女性工作日情况
+
+var sqlWomanRest ='select count(*) as num,' +
+                'date_format(start_time, "%y-%m-%d %H" ) as date,' +
+                'date_format(start_time, "%W" ) as week ' +
+                'from citibike_tripdata ' +
+                'where gender=2 and ' + //女性
+                'dayofweek(start_time)=1 or ' + //
+                'dayofweek(start_time)=7 ' +
+                'group by date_format(start_time, "%y-%m-%d %H" ); '//女性周末情况
+
 
 var arrStations = [];
 var arrHeatInfo = [];
 var arrManWork = [];
+var arrManRest = [];
+var arrWomanWork = [];
+var arrWomanRest = [];
 
 connection.query(sqlStations , function (error, results, fields) {
     if (error) throw error;
@@ -69,6 +100,27 @@ connection.query(sqlManWork , function (error, results, fields) {
         //console.log(arrManWork[i]);
     }
 });
+connection.query(sqlManRest , function (error, results, fields) {
+    if (error) throw error;
+    for (var i = 0; i < results.length; i++) {
+        arrManRest[i] = results[i];
+        //console.log(arrManRest[i]);
+    }
+});
+connection.query(sqlWomanWork , function (error, results, fields) {
+    if (error) throw error;
+    for (var i = 0; i < results.length; i++) {
+        arrWomanWork[i] = results[i];
+        //console.log(arrWomanWork[i]);
+    }
+});
+connection.query(sqlWomanRest , function (error, results, fields) {
+    if (error) throw error;
+    for (var i = 0; i < results.length; i++) {
+        arrWomanRest[i] = results[i];
+        //console.log(arrWomanRest[i]);
+    }
+});
 connection.end();
 
 
@@ -84,6 +136,9 @@ function onRequest(request, response){
     var stations = JSON.stringify(arrStations);
     var heatInfo = JSON.stringify(arrHeatInfo);
     var manWork =  JSON.stringify(arrManWork);
+    var manRest = JSON.stringify(arrManRest);
+    var womanWork = JSON.stringify(arrWomanWork);
+    var womanRest = JSON.stringify(arrWomanRest);
 
 
 /*    console.log(url.parse(request.url).query);//获得请求字段
@@ -93,6 +148,9 @@ function onRequest(request, response){
         case 'stations': response.write(stations); break;
         case 'heatInfo': response.write(heatInfo); break;
         case 'manWork': response.write(manWork); break;
+        case 'manRest': response.write(manRest); break;
+        case 'womanWork': response.write(womanWork); break;
+        case 'womanRest': response.write(womanRest); break;
         default: response.write("Error");
     }
     response.end();
