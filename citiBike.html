@@ -13,34 +13,57 @@
     <link href="lib/bootstrap-3.3.7/css/bootstrap.css" rel="stylesheet">
 
 
-
     <style>
-        #citiBikeMap{
+        #citiBikeMap {
             /*width:100%;*/
-            height:400px;
+            height: 400px;
         }
-        .echarts{
-           /* width: 50%;*/
-            height:400px;
+
+        .echarts {
+            /* width: 50%;*/
+            height: 400px;
         }
+
+        .center-block {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
     </style>
 
 </head>
 <body>
-    <div class="container-fluid">
-        <div id ="citiBikeMap">
+<div class="container-fluid">
+    <div id="citiBikeMap">
     </div>
-    <div class="btn-group">
-        <button id="stations" class="btn btn-default">站点显示</button>
-        <button id="stationsOff" class="btn btn-default">站点隐藏</button>
-
-        <button id="heatInfo" class="btn btn-default">借车情况显示</button>
-        <button id="heatInfoOff" class="btn btn-default">借车情况隐藏</button>
-
-        <button id="manWork" type="button" class="btn btn-default">男性工作日情况</button>
-        <button id="manRest" class="btn btn-default">男性周末情况</button>
-        <button id="womanWork" class="btn btn-default">女性工作日情况</button>
-        <button id="womanRest" class="btn btn-default">女性周末情况</button>
+    <div class="row col-md-10 col-md-offset-1">
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group" role="group">
+                <button id="stations" class="btn btn-default">站点显示</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button id="stationsOff" class="btn btn-default">站点隐藏</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button id="heatInfo" class="btn btn-default">借车情况显示</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button id="heatInfoOff" class="btn btn-default">借车情况隐藏</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button id="manWork" type="button" class="btn btn-default">男性工作日情况</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button id="manRest" class="btn btn-default">男性周末情况</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button id="womanWork" class="btn btn-default">女性工作日情况</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button id="womanRest" class="btn btn-default">女性周末情况</button>
+            </div>
+        </div>
     </div>
     <!--<button id="allCoverOff">清除覆盖物</button>-->
     <div class="row">
@@ -51,8 +74,8 @@
         <div class="echarts col-md-6" id="citiBikeEchartsWomanWork"></div>
         <div class="echarts col-md-6" id="citiBikeEchartsWomanRest"></div>
     </div>
-    </div>
-    <script src="citiBikeMap.js"></script>
-    <script src="citiBikeEcharts.js"></script>
+</div>
+<script src="citiBikeMap.js"></script>
+<script src="citiBikeEcharts.js"></script>
 </body>
 </html>
