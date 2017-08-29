@@ -65,7 +65,24 @@
             </div>
         </div>
     </div>
-    <!--<button id="allCoverOff">清除覆盖物</button>-->
+    <div class="clearfix" style="margin-bottom: 10px;"></div>
+    <div class="row">
+        <form class="form-inline">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="form-group ">
+                    <label for="starttime">开始时间</label>
+                    <input type="date" id="starttime" class="form-control " value="2017-06-01">
+                </div>
+                <div class="form-group">
+                    <label for="endtime">结束时间</label>
+                    <input type="date" id="endtime" class="form-control" value="2017-06-30">
+                </div>
+                <div class="form-group">
+                    <button id="timePost" class="btn btn-default">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div class="row">
         <div class="echarts col-md-6" id="citiBikeEchartsManWork"></div>
         <div class="echarts col-md-6" id="citiBikeEchartsManRest"></div>

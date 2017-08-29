@@ -1,8 +1,5 @@
-
-
-
-var Echarts= {
-    initLineChart:function(id,title,data) {
+var Echarts = {
+    initLineChart: function (id, title, data) {
         var myChart = echarts.init(document.getElementById(id));
         var option = {
             tooltip: {
@@ -15,15 +12,15 @@ var Echarts= {
                 left: 'center',
                 text: title,
             },
-           /* toolbox: {
-                feature: {
-                    dataZoom: {
-                        yAxisIndex: 'none'
-                    },
-                    restore: {},
-                    saveAsImage: {}
-                }
-            },*/
+            /* toolbox: {
+                 feature: {
+                     dataZoom: {
+                         yAxisIndex: 'none'
+                     },
+                     restore: {},
+                     saveAsImage: {}
+                 }
+             },*/
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
@@ -52,9 +49,9 @@ var Echarts= {
             }],
             series: [
                 {
-                    name:'模拟数据',
-                    type:'line',
-                    smooth:true,
+                    name: '模拟数据',
+                    type: 'line',
+                    smooth: true,
                     symbol: 'none',
                     sampling: 'average',
                     itemStyle: {
@@ -82,9 +79,67 @@ var Echarts= {
 
     }
 };
-    //Echarts.initLineChart();
+//Echarts.initLineChart();
 
-$(document).ready(function() {
+
+var Time = {
+    arrTime: function(){//时间以真实时间来转化
+        var starttime = document.getElementById('starttime').value;
+        var endtime = document.getElementById('endtime').value;
+        var arrtime = [];
+
+        console.log(starttime);
+        console.log(endtime);
+
+        var start = starttime.replace(/-/g, "/");
+        var end = endtime.replace(/-/g, "/");
+        console.log(start);
+        console.log(end);
+
+        start = new Date(start);
+        end = new Date(end);
+
+        console.log(start);
+        console.log(end);
+
+        var num = Math.ceil((end - start) / (1000 * 3600 * 24)) + 1;
+
+        console.log(num);
+
+        var index = start;
+
+        for (var i = 0; i < num; i++) {
+            for (var j = 0; j < 24; j++) {
+                var time = {
+                    data: '',
+                    hour: '',
+                    week: ''
+                };
+                if (j < 10) {
+                    time.data = index.getFullYear() + '-' + (index.getMonth() + 1) + '-' + index.getDate() + ' ' + index.getHours();
+                    time.hour = index.getHours();
+                } else {
+                    time.data = index.getFullYear() + '-' + (index.getMonth() + 1) + '-' + index.getDate() + ' ' + index.getHours();
+                    time.hour = index.getHours();
+                }
+                time.week = index.toString().slice(0, 3);
+                arrtime.push(time);
+                index.setHours(index.getHours() + 1);
+            }
+            index.setDate(index.getDate());
+        }
+        console.log(index);
+        console.log(arrtime);
+    }
+};
+
+$("#timePost").bind("click",function () {
+    Time.arrTime();
+});
+
+
+
+$(document).ready(function () {
     $.ajax({//男性工作日
         type: 'GET',
         url: 'http://127.0.0.1:8081/',
@@ -96,11 +151,11 @@ $(document).ready(function() {
         success: function (data) {
             //alert("Request succeed.");
             //data = JSON.parse(data);
-             var manWorks = {
-                data:[],
-                date:[],
-                week:[]
-             };
+            var manWorks = {
+                data: [],
+                date: [],
+                week: []
+            };
             for (var i = 0; i < data.length; i++) {
 
                 manWorks.data.push(data[i].num);
@@ -108,8 +163,8 @@ $(document).ready(function() {
                 manWorks.week.push(data[i].week);
             }
             console.log(manWorks);
-            $("#manWork").bind("click",function(){
-                Echarts.initLineChart("citiBikeEchartsManWork","manworks",manWorks);
+            $("#manWork").bind("click", function () {
+                Echarts.initLineChart("citiBikeEchartsManWork", "manworks", manWorks);
             });
         }
     });
@@ -126,9 +181,9 @@ $(document).ready(function() {
             //alert("Request succeed.");
             //data = JSON.parse(data);
             var manRests = {
-                data:[],
-                date:[],
-                week:[]
+                data: [],
+                date: [],
+                week: []
             };
             for (var i = 0; i < data.length; i++) {
 
@@ -137,8 +192,8 @@ $(document).ready(function() {
                 manRests.week.push(data[i].week);
             }
             console.log(manRests);
-            $("#manRest").bind("click",function(){
-                Echarts.initLineChart("citiBikeEchartsManRest","manrests",manRests);
+            $("#manRest").bind("click", function () {
+                Echarts.initLineChart("citiBikeEchartsManRest", "manrests", manRests);
             });
         }
     });
@@ -154,9 +209,9 @@ $(document).ready(function() {
             //alert("Request succeed.");
             //data = JSON.parse(data);
             var womanWorks = {
-                data:[],
-                date:[],
-                week:[]
+                data: [],
+                date: [],
+                week: []
             };
             for (var i = 0; i < data.length; i++) {
 
@@ -165,8 +220,8 @@ $(document).ready(function() {
                 womanWorks.week.push(data[i].week);
             }
             console.log(womanWorks);
-            $("#womanWork").bind("click",function(){
-                Echarts.initLineChart("citiBikeEchartsWomanWork","womanwork",womanWorks);
+            $("#womanWork").bind("click", function () {
+                Echarts.initLineChart("citiBikeEchartsWomanWork", "womanwork", womanWorks);
             });
         }
     });
@@ -182,9 +237,9 @@ $(document).ready(function() {
             //alert("Request succeed.");
             //data = JSON.parse(data);
             var womanRests = {
-                data:[],
-                date:[],
-                week:[]
+                data: [],
+                date: [],
+                week: []
             };
             for (var i = 0; i < data.length; i++) {
 
@@ -193,8 +248,8 @@ $(document).ready(function() {
                 womanRests.week.push(data[i].week);
             }
             console.log(womanRests);
-            $("#womanRest").bind("click",function(){
-                Echarts.initLineChart("citiBikeEchartsWomanRest","womanrests",womanRests);
+            $("#womanRest").bind("click", function () {
+                Echarts.initLineChart("citiBikeEchartsWomanRest", "womanrests", womanRests);
             });
         }
     });
