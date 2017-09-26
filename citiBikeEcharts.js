@@ -1,76 +1,58 @@
 var Echarts = {
-    initLineChart: function (id, title, data) {
-        var myChart = echarts.init(document.getElementById(id));
+    initLineChart: function () {
+        myChart = echarts.init(document.getElementById('citiBikeEcharts'));
         var option = {
+            title: {
+                text: '折线图'
+            },
             tooltip: {
                 trigger: 'axis',
-                position: function (pt) {
-                    return [pt[0], '10%'];
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
                 }
             },
-            title: {
-                left: 'center',
-                text: title,
+            legend: {
+                data: [0,1,2]
             },
-            /* toolbox: {
-                 feature: {
-                     dataZoom: {
-                         yAxisIndex: 'none'
-                     },
-                     restore: {},
-                     saveAsImage: {}
-                 }
-             },*/
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: data.date,
-            },
-            yAxis: {
-                type: 'value',
-                boundaryGap: [0, '100%']
-            },
-            dataZoom: [{
-                type: 'inside',
-                start: 0,
-                end: 10
-            }, {
-                start: 0,
-                end: 10,
-                handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                handleSize: '80%',
-                handleStyle: {
-                    color: '#fff',
-                    shadowBlur: 3,
-                    shadowColor: 'rgba(0, 0, 0, 0.6)',
-                    shadowOffsetX: 2,
-                    shadowOffsetY: 2
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
                 }
-            }],
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: [0,1,2]
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
             series: [
                 {
-                    name: '模拟数据',
+                    name: '',
                     type: 'line',
-                    smooth: true,
-                    symbol: 'none',
-                    sampling: 'average',
-                    itemStyle: {
+                    stack: '总量',
+                    label: {
                         normal: {
-                            color: 'rgb(255, 70, 131)'
+                            show: true,
+                            position: 'top'
                         }
                     },
-                    areaStyle: {
-                        normal: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                offset: 0,
-                                color: 'rgb(255, 158, 68)'
-                            }, {
-                                offset: 1,
-                                color: 'rgb(255, 70, 131)'
-                            }])
-                        }
-                    },
-                    data: data.data
+                    areaStyle: {normal: {}},
+                    data: [0,1,2]
                 }
             ]
         };
@@ -79,11 +61,11 @@ var Echarts = {
 
     }
 };
-//Echarts.initLineChart();
+Echarts.initLineChart();
 
 
 var Time = {
-    arrTime: function(){//时间以真实时间来转化
+    arrTime: function () {//时间以真实时间来转化
         var starttime = document.getElementById('starttime').value;
         var endtime = document.getElementById('endtime').value;
         var arrtime = [];
@@ -133,10 +115,9 @@ var Time = {
     }
 };
 
-$("#timePost").bind("click",function () {
+$("#timePost").bind("click", function () {
     Time.arrTime();
 });
-
 
 
 $(document).ready(function () {
@@ -153,18 +134,39 @@ $(document).ready(function () {
             //data = JSON.parse(data);
             var manWorks = {
                 data: [],
-                date: [],
-                week: []
+                date: []
             };
             for (var i = 0; i < data.length; i++) {
 
                 manWorks.data.push(data[i].num);
                 manWorks.date.push(data[i].date);
-                manWorks.week.push(data[i].week);
             }
             console.log(manWorks);
             $("#manWork").bind("click", function () {
-                Echarts.initLineChart("citiBikeEchartsManWork", "manworks", manWorks);
+                myChart.setOption({
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: manWorks.date
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '',
+                            type: 'line',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            areaStyle: {normal: {}},
+                            data: manWorks.data
+                        }
+                    ]
+                });
             });
         }
     });
@@ -193,7 +195,9 @@ $(document).ready(function () {
             }
             console.log(manRests);
             $("#manRest").bind("click", function () {
-                Echarts.initLineChart("citiBikeEchartsManRest", "manrests", manRests);
+                myChart.setOption(
+                    option.series[0].data.push(manRests.data)
+                );
             });
         }
     });
@@ -221,7 +225,30 @@ $(document).ready(function () {
             }
             console.log(womanWorks);
             $("#womanWork").bind("click", function () {
-                Echarts.initLineChart("citiBikeEchartsWomanWork", "womanwork", womanWorks);
+                myChart.setOption({
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data:womanWorks.date
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '',
+                            type: 'line',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            areaStyle: {normal: {}},
+                            data: womanWorks.data
+                        }
+                    ]
+                });
             });
         }
     });
@@ -249,7 +276,30 @@ $(document).ready(function () {
             }
             console.log(womanRests);
             $("#womanRest").bind("click", function () {
-                Echarts.initLineChart("citiBikeEchartsWomanRest", "womanrests", womanRests);
+                myChart.setOption({
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: womanRests.date
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '',
+                            type: 'line',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            areaStyle: {normal: {}},
+                            data: womanRests.data
+                        }
+                    ]
+                });
             });
         }
     });
