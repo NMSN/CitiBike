@@ -1,123 +1,97 @@
 var Echarts = {
-    initLineChart: function () {
-        myChart = echarts.init(document.getElementById('citiBikeEcharts'));
-        var option = {
-            title: {
-                text: '折线图'
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross',
-                    label: {
-                        backgroundColor: '#6a7985'
-                    }
+     myChart: echarts.init(document.getElementById('citiBikeEcharts')),
+     option: {
+        title: {
+            text: '折线图'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
                 }
-            },
-            legend: {
-                data: [0,1,2]
-            },
-            toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: [0,1,2]
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value'
-                }
-            ],
-            series: [
-                {
-                    name: '',
-                    type: 'line',
-                    stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'top'
-                        }
-                    },
-                    areaStyle: {normal: {}},
-                    data: [0,1,2]
-                }
-            ]
-        };
-
-        myChart.setOption(option);
-
-    }
-};
-Echarts.initLineChart();
-
-
-var Time = {
-    arrTime: function () {//时间以真实时间来转化
-        var starttime = document.getElementById('starttime').value;
-        var endtime = document.getElementById('endtime').value;
-        var arrtime = [];
-
-        console.log(starttime);
-        console.log(endtime);
-
-        var start = starttime.replace(/-/g, "/");
-        var end = endtime.replace(/-/g, "/");
-        console.log(start);
-        console.log(end);
-
-        start = new Date(start);
-        end = new Date(end);
-
-        console.log(start);
-        console.log(end);
-
-        var num = Math.ceil((end - start) / (1000 * 3600 * 24)) + 1;
-
-        console.log(num);
-
-        var index = start;
-
-        for (var i = 0; i < num; i++) {
-            for (var j = 0; j < 24; j++) {
-                var time = {
-                    data: '',
-                    hour: '',
-                    week: ''
-                };
-                if (j < 10) {
-                    time.data = index.getFullYear() + '-' + (index.getMonth() + 1) + '-' + index.getDate() + ' ' + index.getHours();
-                    time.hour = index.getHours();
-                } else {
-                    time.data = index.getFullYear() + '-' + (index.getMonth() + 1) + '-' + index.getDate() + ' ' + index.getHours();
-                    time.hour = index.getHours();
-                }
-                time.week = index.toString().slice(0, 3);
-                arrtime.push(time);
-                index.setHours(index.getHours() + 1);
             }
-            index.setDate(index.getDate());
+        },
+        legend: {
+            data: [0,1,2]
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: [0,1,2]
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: '',
+                type: 'line',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top'
+                    }
+                },
+                areaStyle: {normal: {}},
+                data: [0,1,2]
+            }
+        ],
+
+        setLegend: function(legend){
+            this.legend.data = legend;
+        },
+        pushLegend: function(legend){
+            this.legend.data.concat(legend);
+        },
+        setXAxis: function(xAxix){
+            this.xAxis.data = xAxix;
+        },
+        setSeries: function(i,data){
+            this.series[i] =  data;
+        },
+        pushSeries: function(name,data){
+            var object = {
+                            name: name,
+                            type: 'line',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            areaStyle: {normal: {}},
+                            data: data
+                        }
+            this.series.push(object);
         }
-        console.log(index);
-        console.log(arrtime);
+    },
+    setOption: function(option){
+        this.myChart.setOption(option);
     }
 };
 
-$("#timePost").bind("click", function () {
-    Time.arrTime();
-});
+
+
+
 
 
 $(document).ready(function () {
@@ -143,30 +117,7 @@ $(document).ready(function () {
             }
             console.log(manWorks);
             $("#manWork").bind("click", function () {
-                myChart.setOption({
-                    xAxis: [
-                        {
-                            type: 'category',
-                            boundaryGap: false,
-                            data: manWorks.date
-                        }
-                    ],
-                    series: [
-                        {
-                            name: '',
-                            type: 'line',
-                            stack: '总量',
-                            label: {
-                                normal: {
-                                    show: true,
-                                    position: 'top'
-                                }
-                            },
-                            areaStyle: {normal: {}},
-                            data: manWorks.data
-                        }
-                    ]
-                });
+
             });
         }
     });
