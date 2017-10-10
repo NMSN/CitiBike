@@ -14,7 +14,7 @@ var Echarts = {
             }
         },
         legend: {
-            data: [0,1,2]
+            data: ['']
         },
         toolbox: {
             feature: {
@@ -31,7 +31,7 @@ var Echarts = {
             {
                 type: 'category',
                 boundaryGap: false,
-                data: [0,1,2]
+                data: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
             }
         ],
         yAxis: [
@@ -39,56 +39,49 @@ var Echarts = {
                 type: 'value'
             }
         ],
-        series: [
-            {
-                name: '',
-                type: 'line',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'top'
-                    }
-                },
-                areaStyle: {normal: {}},
-                data: [0,1,2]
-            }
-        ],
+        series: [],
 
         setLegend: function(legend){
             this.legend.data = legend;
         },
         pushLegend: function(legend){
-            this.legend.data.concat(legend);
+            this.legend.data.push(legend);
+            Echarts.myChart.setOption(this);
         },
-        setXAxis: function(xAxix){
-            this.xAxis.data = xAxix;
-        },
-        setSeries: function(i,data){
-            this.series[i] =  data;
+        setXAxis: function(xAxis){
+            this.xAxis.data = xAxis;
         },
         pushSeries: function(name,data){
             var object = {
                             name: name,
                             type: 'line',
-                            stack: '总量',
+
                             label: {
                                 normal: {
                                     show: true,
-                                    position: 'top'
+                                    //position: 'top'
                                 }
                             },
-                            areaStyle: {normal: {}},
+                            //areaStyle: {normal: {}},
                             data: data
-                        }
+                        };
+
             this.series.push(object);
-        }
+            Echarts.myChart.setOption(this);
+        },
+        clearSeries:function(){
+            this.series = []
+
+        },
+
     },
     setOption: function(option){
         this.myChart.setOption(option);
-    }
-};
+    },
 
+
+};
+Echarts.setOption(Echarts.option);
 
 
 
@@ -117,6 +110,8 @@ $(document).ready(function () {
             }
             console.log(manWorks);
             $("#manWork").bind("click", function () {
+                Echarts.option.pushLegend('manWorks');
+                Echarts.option.pushSeries('manWorks',manWorks.data);
 
             });
         }
@@ -135,20 +130,18 @@ $(document).ready(function () {
             //data = JSON.parse(data);
             var manRests = {
                 data: [],
-                date: [],
-                week: []
+                date: []
             };
             for (var i = 0; i < data.length; i++) {
 
                 manRests.data.push(data[i].num);
                 manRests.date.push(data[i].date);
-                manRests.week.push(data[i].week);
+
             }
             console.log(manRests);
             $("#manRest").bind("click", function () {
-                myChart.setOption(
-                    option.series[0].data.push(manRests.data)
-                );
+                Echarts.option.pushLegend('manRests');
+                Echarts.option.pushSeries('manRests',manRests.data);
             });
         }
     });
@@ -165,41 +158,18 @@ $(document).ready(function () {
             //data = JSON.parse(data);
             var womanWorks = {
                 data: [],
-                date: [],
-                week: []
+                date: []
             };
             for (var i = 0; i < data.length; i++) {
 
                 womanWorks.data.push(data[i].num);
                 womanWorks.date.push(data[i].date);
-                womanWorks.week.push(data[i].week);
+
             }
             console.log(womanWorks);
             $("#womanWork").bind("click", function () {
-                myChart.setOption({
-                    xAxis: [
-                        {
-                            type: 'category',
-                            boundaryGap: false,
-                            data:womanWorks.date
-                        }
-                    ],
-                    series: [
-                        {
-                            name: '',
-                            type: 'line',
-                            stack: '总量',
-                            label: {
-                                normal: {
-                                    show: true,
-                                    position: 'top'
-                                }
-                            },
-                            areaStyle: {normal: {}},
-                            data: womanWorks.data
-                        }
-                    ]
-                });
+                Echarts.option.pushLegend('womanWorks');
+                Echarts.option.pushSeries('womanWorks',womanWorks.data);
             });
         }
     });
@@ -216,42 +186,32 @@ $(document).ready(function () {
             //data = JSON.parse(data);
             var womanRests = {
                 data: [],
-                date: [],
-                week: []
+                date: []
             };
             for (var i = 0; i < data.length; i++) {
 
                 womanRests.data.push(data[i].num);
                 womanRests.date.push(data[i].date);
-                womanRests.week.push(data[i].week);
             }
             console.log(womanRests);
             $("#womanRest").bind("click", function () {
-                myChart.setOption({
-                    xAxis: [
-                        {
-                            type: 'category',
-                            boundaryGap: false,
-                            data: womanRests.date
-                        }
-                    ],
-                    series: [
-                        {
-                            name: '',
-                            type: 'line',
-                            stack: '总量',
-                            label: {
-                                normal: {
-                                    show: true,
-                                    position: 'top'
-                                }
-                            },
-                            areaStyle: {normal: {}},
-                            data: womanRests.data
-                        }
-                    ]
-                });
+                Echarts.option.pushLegend('womanRests');
+                Echarts.option.pushSeries('womanRests',womanRests.data);
             });
+        }
+    });
+    $.ajax({//hangzhou
+        type: 'GET',
+        url: 'http://127.0.0.1:8082/',
+        data: 'HangZhou',
+        dataType: 'json',
+        error: function () {
+            alert("Request failed.");
+        },
+        success: function (data) {
+            //alert("Request succeed.");
+            //data = JSON.parse(data);
+            console.log(data);
         }
     });
 });

@@ -35,69 +35,36 @@ var sqlHeatInfo = 'select count(*) as count,' +
     'from citibike_tripdata ' +
     'group by start_station_id;'
 
-var sqlManWork = 'select count(*) as num,' +
-    'date_format(start_time, "%y-%m-%d %H" ) as date,' +
-    'date_format(start_time, "%W" ) as week ' +
-    'from citibike_tripdata ' +
-    'where gender=1 and ' + //男性
-    'dayofweek(start_time)!=1 and ' +
-    'dayofweek(start_time)!=7 ' + //工作日
-    'group by date_format(start_time, "%y-%m-%d %H" ); '//男性工作日情况
-
-var sqlManRest = 'select count(*) as num,' +
-    'date_format(start_time, "%y-%m-%d %H" ) as date,' +
-    'date_format(start_time, "%W" ) as week ' +
-    'from citibike_tripdata ' +
-    'where gender=1 and ' + //男性
-    'dayofweek(start_time)=1 or ' + //
-    'dayofweek(start_time)=7 ' +
-    'group by date_format(start_time, "%y-%m-%d %H" ); '//男性周末情况
-
-var sqlWomanWork = 'select count(*) as num,' +
-    'date_format(start_time, "%y-%m-%d %H" ) as date,' +
-    'date_format(start_time, "%W" ) as week ' +
-    'from citibike_tripdata ' +
-    'where gender=2 and ' +
-    'dayofweek(start_time)!=1 and ' +
-    'dayofweek(start_time)!=7 ' +
-    'group by date_format(start_time, "%y-%m-%d %H" ); '//女性工作日情况
-
-var sqlWomanRest = 'select count(*) as num,' +
-    'date_format(start_time, "%y-%m-%d %H" ) as date,' +
-    'date_format(start_time, "%W" ) as week ' +
-    'from citibike_tripdata ' +
-    'where gender=2 and ' + //女性
-    'dayofweek(start_time)=1 or ' + //
-    'dayofweek(start_time)=7 ' +
-    'group by date_format(start_time, "%y-%m-%d %H" ); '//女性周末情况
-
-
 /*------------------------------------------------------------------------------*/
 
-var sqlManWork24 = 'SELECT count(*) as num, date_format(start_time, "%H" ) as date ' +
+var sqlManWork24 = 'SELECT count(*) as num, date_format(start_time, "%H") as date ' +
     'FROM `citibike_tripdata` ' +
     'WHERE gender=1 ' +
     'AND  dayofweek(start_time)!=1 ' +
     'AND  dayofweek(start_time)!=7 ' +
     'GROUP BY date_format(start_time, "%H" ) ;'
-var sqlManRest24 = 'SELECT count(*) as num, date_format(start_time, "%H" ) as date ' +
+var sqlManRest24 = 'SELECT count(*) as num, date_format(start_time, "%H") as date ' +
     'FROM `citibike_tripdata` ' +
     'WHERE gender=1 ' +
     'AND	dayofweek(start_time)=1 ' +
     'OR  dayofweek(start_time)=7 ' +
     'GROUP BY date_format(start_time, "%H" ) ;'
-var sqlWomanWork24 = 'SELECT count(*) as num, date_format(start_time, "%H" ) as date ' +
+var sqlWomanWork24 = 'SELECT count(*) as num, date_format(start_time, "%H") as date ' +
     'FROM `citibike_tripdata` ' +
     'WHERE gender=2 ' +
     'AND	dayofweek(start_time)!=1 ' +
     'AND  dayofweek(start_time)!=7 ' +
     'GROUP BY date_format(start_time, "%H" ) ;'
-var sqlWomanRest24 = 'SELECT count(*) as num, date_format(start_time, "%H" ) as date ' +
+var sqlWomanRest24 = 'SELECT count(*) as num, date_format(start_time, "%H") as date ' +
     'FROM `citibike_tripdata` ' +
     'WHERE gender=2 ' +
     'AND	dayofweek(start_time)=1 ' +
     'OR  dayofweek(start_time)=7 ' +
     'GROUP BY date_format(start_time, "%H" ) ;'
+
+/*-----------------------------------------------------------------------------*/
+
+var sqlHangZhou = 'SELECT * FROM b_leaseinfohis_hour24';
 
 var arrStations = [];
 var arrHeatInfo = [];
@@ -105,6 +72,7 @@ var arrManWork = [];
 var arrManRest = [];
 var arrWomanWork = [];
 var arrWomanRest = [];
+var arrHangZhou = [];
 
 connection.query(sqlStations, function (error, results, fields) {
     if (error) throw error;
@@ -124,7 +92,7 @@ connection.query(sqlManWork24, function (error, results, fields) {
     if (error) throw error;
     for (var i = 0; i < results.length; i++) {
         arrManWork[i] = results[i];
-        console.log(arrManWork[i]);
+        //console.log(arrManWork[i]);
     }
 });
 connection.query(sqlManRest24, function (error, results, fields) {

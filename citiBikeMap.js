@@ -1,15 +1,14 @@
 //地图功能
     var Map = {
+        map : new BMap.Map("citiBikeMap"),   // 创建Map实例
         createMap:function(){
-            map = new BMap.Map("citiBikeMap");    // 创建Map实例
-            /*map是全局对象待解决*/
-            map.centerAndZoom(new BMap.Point(-74.04424731,40.72759597), 15);  // 初始化地图,设置中心点坐标和地图级别
-            map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
-            map.setCurrentCity("纽约");          // 设置地图显示的城市 此项是必须设置的
-            map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-            map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT}));//开启比例尺功能
-            map.addControl(new BMap.NavigationControl());//开启缩放控件功能
-            opts = {
+            this.map.centerAndZoom(new BMap.Point(-74.04424731,40.72759597), 15);  // 初始化地图,设置中心点坐标和地图级别
+            this.map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+            this.map.setCurrentCity("纽约");          // 设置地图显示的城市 此项是必须设置的
+            this.map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+            this.map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT}));//开启比例尺功能
+            this.map.addControl(new BMap.NavigationControl());//开启缩放控件功能
+            this.opts = {
                 width: 350,     // 信息窗口宽度
                 height: 70,     // 信息窗口
                 enableMessage: true//设置允许信息窗发送短息
@@ -22,12 +21,12 @@
                 var marker = new BMap.Marker(new BMap.Point(data[i].longitude, data[i].latitude));
                 var content = "Station Name:" + data[i].station_name + "<br>" +
                     "Station Lng&Lat:" + data[i].longitude + "," + data[i].latitude;
-                map.addOverlay(marker);               // 将标注添加到地图中
+                this.map.addOverlay(marker);               // 将标注添加到地图中
                 this.addClickHandler(content,marker);
             }
         },
         clearOverlays:function(){
-            map.clearOverlays();
+            this.map.clearOverlays();
         },
 
         addClickHandler:function(content,marker){
@@ -39,13 +38,13 @@
         openInfo:function(content,e){
             var p = e.target;
             var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-            var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
-            map.openInfoWindow(infoWindow,point); //开启信息窗口
+            var infoWindow = new BMap.InfoWindow(content,this.opts);  // 创建信息窗口对象
+            this.map.openInfoWindow(infoWindow,point); //开启信息窗口
         },
 
         heatMap:function(){
             heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":30});
-            map.addOverlay(heatmapOverlay);
+            this.map.addOverlay(heatmapOverlay);
             //heatmapOverlay.setDataSet({data:points,max:100});//是否显示热力图
         },
 
@@ -92,6 +91,7 @@
                 //alert("Request succeed.");
                 //data = JSON.parse(data);
                 stations = data;
+                console.log(stations);
             }
         });
         $.ajax({
@@ -134,10 +134,10 @@
     });
 
     $("#stationsOff").bind("click",function(){
-        var allOverlay = map.getOverlays();
+        var allOverlay = Map.map.getOverlays();
         console.log(allOverlay);
         for (var i = 0; i < allOverlay.length -1; i++){
-                map.removeOverlay(allOverlay[i]);
+                Map.map.removeOverlay(allOverlay[i]);
         }
     });
 
