@@ -13,7 +13,7 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-var sqlHangZhou = 'SELECT * FROM b_leaseinfohis_hour24';
+var sqlHangZhou = 'SELECT * FROM b_leaseinfohis_hour24ratio';
 
 var arrHangZhou = [];
 

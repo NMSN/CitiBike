@@ -69,10 +69,11 @@ var Echarts = {
             this.series.push(object);
             Echarts.myChart.setOption(this);
         },
+
         clearSeries:function(){
             this.series = []
 
-        },
+        }
 
     },
     setOption: function(option){
@@ -200,18 +201,22 @@ $(document).ready(function () {
             });
         }
     });
-    $.ajax({//hangzhou
-        type: 'GET',
-        url: 'http://127.0.0.1:8082/',
-        data: 'HangZhou',
-        dataType: 'json',
-        error: function () {
-            alert("Request failed.");
-        },
-        success: function (data) {
-            //alert("Request succeed.");
-            //data = JSON.parse(data);
-            console.log(data);
-        }
-    });
+
+
+
+
+    // $.ajax({//hangzhou
+    //     type: 'GET',
+    //     url: 'http://127.0.0.1:8082/',
+    //     data: 'HangZhou',
+    //     dataType: 'json',
+    //     error: function () {
+    //         alert("Request failed.");
+    //     },
+    //     success: function (data) {
+    //         //alert("Request succeed.");
+    //         //data = JSON.parse(data);
+    //         // console.log(data);
+    //     }
+    // });
 });
