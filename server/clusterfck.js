@@ -85,6 +85,7 @@ function onRequest(request, response) {
     console.log(ajaxObj);
     if (ajaxObj.init) {
         var resultCount = JSON.stringify(initCount);
+        response.writeHead(200, {'Content-Type': 'text/html;charset:utf-8'});
         response.write(resultCount);
         response.end();
     }
@@ -174,6 +175,7 @@ function onRequest(request, response) {
             // console.log(idArr[i]);
 
             var resultOut = JSON.stringify(result);
+            response.writeHead(200, {'Content-Type': 'text/html;charset:utf-8'});
             response.write(resultOut);
             response.end();
         });
@@ -196,6 +198,7 @@ function onRequest(request, response) {
                 stations.push(results);
                 if (stations.length >= idArr.length) {
                     var resultOut = JSON.stringify(stations);
+                    response.writeHead(200, {'Content-Type': 'text/html;charset:utf-8'});
                     response.write(resultOut);
                     response.end();
                 }
@@ -244,7 +247,7 @@ function onRequest(request, response) {
                 ave: clustersHour.ave
             }
             var resultHour = JSON.stringify(clustersHour);
-
+            response.writeHead(200, {'Content-Type': 'text/html;charset:utf-8'});
             response.write(resultHour);
             response.end();
         });
@@ -283,8 +286,8 @@ function onRequest(request, response) {
 
                 }
             const res = JSON.stringify(result);
-            // response.writeHead(200, {'Content-Type': 'text/plain;charset:utf-8'});
-            response.write(result);
+            response.writeHead(200, {'Content-Type': 'text/html;charset:utf-8'});
+            response.write(JSON.stringify(result),'utf-8');
             response.end();
             });
         });
