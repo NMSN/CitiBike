@@ -308,26 +308,21 @@ function EchartsRadar(item) {
     };
 }
 
-
 $(document).ready(function () {
-
     var map = new BMap.Map("map", {
         enableMapClick: false
     });    // 创建Map实例
     map.centerAndZoom(new BMap.Point(120.19, 30.26), 13);  // 初始化地图,设置中心点坐标和地图级别
-// map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+ // map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
     map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT}));// 左上角，添加比例尺
     map.addControl(new BMap.NavigationControl());//左上角，添加默认缩放平移控件
     map.setMapStyle({
         style: 'light'
     });
-
-
     var weekModel = $('#week-model')[0];
     var hourModel = $('#hour-model')[0];
     var EchartWeek = new EchartsLine(weekModel);
     var EchartHour = new EchartsLine(hourModel);
-
     $('.action').on('click',function(){
         EchartWeek.myChart.resize();
         var category = $('.category-table input').val();
@@ -384,8 +379,6 @@ $(document).ready(function () {
                     $('#week-list').css('display','flex');
                     radar.myChart.resize();
 
-
-                    // var color = ['rgba(194,53,49,0.3)','rgba(47,69,84,0.3)', 'rgba(97,160,168,0.3)', 'rgba(212,130,101,0.3)', 'rgba(145,199,174,0.3)','rgba(116,159,131,0.3)', 'rgba(202,134,34,0.3)', 'rgba(189,162,154,0.3)', 'rgba(110,112,116,0.3)','rgba(84,101,112,0.3)', 'rgba(196,204,211,0.3)'];
                     var color = ['rgba(255,0,0,0.3)','rgba(0,255,0,0.3)','rgba(0,0,255,0.3)','rgba(125,125,0,0.3)','rgba(125,0,125,0.3)','rgba(0,125,125,0.3)'];
                     var stations = [];
 
@@ -427,13 +420,8 @@ $(document).ready(function () {
                             }
                             var dataSet = new mapv.DataSet(stations);
                             var mapvLayer = new mapv.baiduMapLayer(map, dataSet);
-
                         }
                     });
-
-
-
-                    // console.log($('#bar-chart').offset().top + $('#bar-chart').height());
                     $('html,body').animate({
                         scrollTop:$('#bar-chart').offset().top + $('#bar-chart').height() + 20
                     },300);
@@ -453,6 +441,24 @@ $(document).ready(function () {
         $('#hour-list').hide();
     });
 
+    $('.user-search-button').on('click',function(){
+        const inputValue = $('.user-search-input').val();
+        // console.log(inputValue);
+        $.ajax({
+            type: 'GET',
+            url: 'http://127.0.0.1:8082/',
+            data: {
+                usrIndex: inputValue,
+            },
+            dataType: 'json',
+            error: function () {
+                alert("Request failed.");
+            },
+            success: function (data) {
+                alert(JSON.parse(data));
+            },
+        });
+    });
     EchartWeek.myChart.on('click',function(params){
         $('#hour-model').show();
         console.log(params.seriesIndex);
@@ -477,20 +483,9 @@ $(document).ready(function () {
                     EchartHour.option.pushLegendAndSeries(`  第${i+1}类\n总数:${data.clusters[i].length}`,data.ave[i]);
                 }
                 EchartHour.myChart.resize();
-
-
                 for(var i=0;i<data.ave.length+1;i++){
                     $('#hour-list').append('<li></li>');
                 }
-                // var nameList = ['6-7','7-8','8-9','9-10','10-11','11-12','12-13','13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21','21-22'];
-                // for(var i=0;i<data.ave.length;i++){
-                //     var pie2 = new EchartsPie($('#hour-list li')[i]);
-                //     pie2.option.title.text = `${i+1}`;
-                //     for(var j=0;j<data.ave[0].length;j++){
-                //         pie2.option.pushLegendAndSeries(nameList[j],data.ave[i][j]);
-                //         console.log(data.ave[i][j]);
-                //     }
-                // }
 
                 var nameList = ['6-7','7-8','8-9','9-10','10-11','11-12','12-13','13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21','21-22'];
                 var pie2 = new EchartsPie($('#hour-list li')[0]);
@@ -513,8 +508,6 @@ $(document).ready(function () {
                 $('#hour-list').show();
                 $('#hour-list').css('display','flex');
                 radar.myChart.resize();
-
-
                 console.log($('#week-model').offset().top +$('#week-model').height());
                 $('html,body').animate({
                     scrollTop:$('#week-model').offset().top +$('#week-model').height() + 20

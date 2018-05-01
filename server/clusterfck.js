@@ -251,7 +251,44 @@ function onRequest(request, response) {
         // connection.end();
 
     }
+    if (ajaxObj.usrIndex) {
+        const userId = ajaxObj.usrIndex;
+        /* 查询人相关信息 */
+        const sqlLease = `select leasestation,STATIONNAME,BAIDU_X,BAIDU_Y,SUM from baidu_xy a
+                        join (
+                            select count(*) as sum,LEASESTATION from b_leaseinfohis_brief201405
+                        where cardno = ${userId}
+                        group by LEASESTATION) b
+                        on a.STATIONID = b.LEASESTATION;`;
+        const result  = {};
+        // const sql = `select * from week_holi_201405 where CARDNO = ${userId}`;
+        connection.query(sqlLease, function (error, results, fields) {
+            if (error) throw error;
+            result.lease = [];
+            for (let i = 0; i < results.length; i++) {
+                result.lease[i] = results[i];
+            }
+            const sqlReturn = `select returnstation,STATIONNAME,BAIDU_X,BAIDU_Y,SUM from baidu_xy a
+                        join (
+                            select count(*) as sum,RETURNSTATION from b_leaseinfohis_brief201405
+                        where cardno = ${userId}
+                        group by RETURNSTATION) b
+                        on a.STATIONID = b.RETURNSTATION;`;
+            connection.query(sqlReturn, function (error, results, fields) {
+                if (error) throw error;
+                result.return = [];
+                for (let i = 0; i < results.length; i++) {
+                    result.return[i] = results[i];
+                    console.log(results[i]);
 
+                }
+            const res = JSON.stringify(result);
+            // response.writeHead(200, {'Content-Type': 'text/plain;charset:utf-8'});
+            response.write(result);
+            response.end();
+            });
+        });
+    } 
 
 }
 
