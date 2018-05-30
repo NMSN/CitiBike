@@ -2,7 +2,7 @@ var map = new BMap.Map("stations-map", {
     enableMapClick: false
 });    // 创建Map实例
 map.centerAndZoom(new BMap.Point(120.19, 30.26), 14);  // 初始化地图,设置中心点坐标和地图级别
-// map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
 map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT}));// 左上角，添加比例尺
 map.addControl(new BMap.NavigationControl());//左上角，添加默认缩放平移控件
 map.setMapStyle({
@@ -22,10 +22,10 @@ for(var i=0;i<stations.length;i++){
     data.push({
        geometry:{
            type: 'Point',
-           coordinates: [stations[i].point.lng,stations[i].point.lat]
+           coordinates: [stations[i].baiduX,stations[i].baiduY]
        },
-       name: stations[i].stationname,
-       stationId: stations[i].stationid,
+       stationName: stations[i].stationName,
+       stationId: stations[i].stationId,
     });
 }
 var dataSet = new mapv.DataSet(data);
@@ -39,7 +39,7 @@ var options = {
     methods: {
         click: function (item) {
             // alert(`${item.stationId} ${item.name}`);
-            openInfo(`${item.stationId} ${item.name}`, item);
+            openInfo(`${item.stationId} ${item.stationName}`, item);
         }
     },
     size: 3,

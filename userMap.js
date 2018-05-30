@@ -2,7 +2,7 @@ const userMap = new BMap.Map("user-map", {
     enableMapClick: false
 });    // 创建Map实例
 userMap.centerAndZoom(new BMap.Point(120.19, 30.26), 13);  // 初始化地图,设置中心点坐标和地图级别
-// map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+userMap.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
 userMap.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT}));// 左上角，添加比例尺
 userMap.addControl(new BMap.NavigationControl());//左上角，添加默认缩放平移控件
 userMap.setMapStyle({

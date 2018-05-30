@@ -15,6 +15,8 @@ $(document).ready(function () {
     var EchartWeek = new EchartsLine(weekModel);
     var EchartHour = new EchartsLine(hourModel);
 
+    var mapvLayer;
+
 
 
     $('.action').on('click',function(){
@@ -82,14 +84,14 @@ $(document).ready(function () {
                           elem: '#week-table',
                           cols: [[ //标题栏
                             {field: 'id', title: 'ID', width: 150, sort: true},
-                            {field: 'x1', title: 'w1', width: 80},
-                            {field: 'x2', title: 'w2', width: 80},
-                            {field: 'x3', title: 'w3', width: 80},
-                            {field: 'x4', title: 'w4', width: 80},
-                            {field: 'x5', title: 'w5', width: 80},
-                            {field: 'x6', title: 'w6', width: 80},
-                            {field: 'x7', title: 'w7', width: 80},
-                            {field: 'xholi', title: 'wholi', width: 80},
+                            {field: 'x1', title: 'x1', width: 80},
+                            {field: 'x2', title: 'x2', width: 80},
+                            {field: 'x3', title: 'x3', width: 80},
+                            {field: 'x4', title: 'x4', width: 80},
+                            {field: 'x5', title: 'x5', width: 80},
+                            {field: 'x6', title: 'x6', width: 80},
+                            {field: 'x7', title: 'x7', width: 80},
+                            {field: 'xholi', title: 'xholi', width: 80},
                           ]]
                           ,data: listArr
                           //,skin: 'line' //表格风格
@@ -107,7 +109,7 @@ $(document).ready(function () {
                         EchartWeek.option.pushLegendAndSeries(`  第${i+1}类\n总数:${data.clusters[i].length}`,data.ave[i]);
                     }
                     EchartWeek.myChart.resize();
-
+                    $('#week-list').empty();
                     for(var i=0;i<data.ave.length+1;i++){
                         $('#week-list').append('<li></li>');
                     }
@@ -132,7 +134,7 @@ $(document).ready(function () {
                     $('#week-list').css('display','flex');
                     radar.myChart.resize();
 
-                    var color = ['rgba(255,0,0,0.3)','rgba(0,255,0,0.3)','rgba(0,0,255,0.3)','rgba(125,125,0,0.3)','rgba(125,0,125,0.3)','rgba(0,125,125,0.3)'];
+                    const color = ['rgba(255,0,0,0.3)','rgba(0,255,0,0.3)','rgba(0,0,255,0.3)','rgba(125,125,0,0.3)','rgba(125,0,125,0.3)','rgba(0,125,125,0.3)'];
                     var stations = [];
 
                     $.ajax({
@@ -172,8 +174,16 @@ $(document).ready(function () {
                                 }
                             }
                             console.log(stations);
+                            // dataSet.set(data); // 修改数据
+
+                            // mapvLayer.show(); // 显示图层
+                            // mapvLayer.hide(); // 删除图层
+
+                            if (mapvLayer) {
+                                mapvLayer.destroy();
+                            }
                             var dataSet = new mapv.DataSet(stations);
-                            var mapvLayer = new mapv.baiduMapLayer(map, dataSet);
+                            mapvLayer = new mapv.baiduMapLayer(map, dataSet);
                         }
                     });
                     $('html,body').animate({
@@ -211,6 +221,139 @@ $(document).ready(function () {
             },
             success: function (data) {
                 console.log(data);
+                const instance = data.clusters.map(item => {
+                    return item.slice(0, 3);
+                })
+                console.log(instance);
+                const listArr = [];
+                for(let i = 0; i < instance.length; i++) {
+                    listArr.push({
+                        id: `第${i+1}类`,
+                        h6: "-",
+                        h7: "-",
+                        h8: "-",
+                        h9: "-",
+                        h10: "-",
+                        h11: "-",
+                        h12: "-",
+                        h13: "-",
+                        h14: "-",
+                        h15: "-",
+                        h16: "-",
+                        h17: "-",
+                        h18: "-",
+                        h19: "-",
+                        h20: "-",
+                        h21: "-",
+                        xholi: "-",
+                    });
+                    for(let j = 0; j < instance[i].length; j++) {
+                        listArr.push({
+                            id: instance[i][j].cardno,
+                            h6: instance[i][j].arr[0],
+                            h7: instance[i][j].arr[1],
+                            h8: instance[i][j].arr[2],
+                            h9: instance[i][j].arr[3],
+                            h10: instance[i][j].arr[4],
+                            h11: instance[i][j].arr[5],
+                            h12: instance[i][j].arr[6],
+                            h13: instance[i][j].arr[7],
+                            h14: instance[i][j].arr[8],
+                            h15: instance[i][j].arr[9],
+                            h16: instance[i][j].arr[10],
+                            h17: instance[i][j].arr[11],
+                            h18: instance[i][j].arr[12],
+                            h19: instance[i][j].arr[13],
+                            h20: instance[i][j].arr[14],
+                            h21: instance[i][j].arr[15],
+                            });
+                    }
+                }
+                console.log(listArr);
+                const color = ['rgba(255,0,0,0.3)','rgba(0,255,0,0.3)','rgba(0,0,255,0.3)','rgba(125,125,0,0.3)','rgba(125,0,125,0.3)','rgba(0,125,125,0.3)'];
+                const stations = [];
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://127.0.0.1:8082/',
+                    data: {
+                        idArr: 'idArr'
+                    },
+                    dataType: 'json',
+                    error: function () {
+                        alert("Request failed.");
+                    },
+                    success: function (data) {
+                        // $('#map,#canvas').show();
+                        console.log(data);
+                        for(var i=0;i<data.length;i++){
+                            var thiscolor = color.shift();
+                            for (j=0;j<data[i].length;j++){
+                                stations.push({
+                                    geometry: {
+                                        type: 'Point',
+                                        coordinates: [data[i][j].BAIDU_X,data[i][j].BAIDU_Y]
+                                    },
+                                    size: data[i][j].SUM*0.1,
+                                    fillStyle: thiscolor,
+                                    shadowColor: 'rgba(255, 50, 50, 1)',
+                                    // globalAlpha: 0.5, // 透明度
+                                    shadowBlur: 30,
+                                    globalCompositeOperation: 'lighter',
+                                    methods: {
+                                        click: function (item) {
+                                            console.log(item);
+                                        }
+                                    },
+                                    draw: 'simple'
+                                });
+                            }
+                        }
+                        console.log(stations);
+                        if (mapvLayer) {
+                            mapvLayer.destroy();
+                        }
+                        var dataSet = new mapv.DataSet(stations);
+                        mapvLayer = new mapv.baiduMapLayer(map, dataSet);
+
+                        // dataSet.set(data); // 修改数据
+
+                        // mapvLayer.show(); // 显示图层
+                        // mapvLayer.hide(); // 删除图层
+                    }
+                });
+
+                layui.use('table', function(){
+                    var table = layui.table;
+                    
+                    table.render({
+                      elem: '#hour-table',
+                      cols: [[ //标题栏
+                        {field: 'id', title: 'ID', width: 150, sort: true},
+                        {field: 'h6', title: 'h6', width: 80},
+                        {field: 'h7', title: 'h7', width: 80},
+                        {field: 'h8', title: 'h8', width: 80},
+                        {field: 'h9', title: 'h9', width: 80},
+                        {field: 'h10', title: 'h10', width: 80},
+                        {field: 'h11', title: 'h11', width: 80},
+                        {field: 'h12', title: 'h12', width: 80},
+                        {field: 'h13', title: 'h13', width: 80},
+                        {field: 'h14', title: 'h14', width: 80},
+                        {field: 'h15', title: 'h15', width: 80},
+                        {field: 'h16', title: 'h16', width: 80},
+                        {field: 'h17', title: 'h17', width: 80},
+                        {field: 'h18', title: 'h18', width: 80},
+                        {field: 'h19', title: 'h19', width: 80},
+                        {field: 'h20', title: 'h20', width: 80},
+                        {field: 'h21', title: 'h21', width: 80},
+                      ]] 
+                      ,data: listArr
+                      //,skin: 'line' //表格风格
+                      ,even: true
+                      //,page: true //是否显示分页
+                      //,limits: [5, 7, 10]
+                      ,limit: (instance.length+1)*3 //每页默认显示的数量
+                    });
+                  });
 
                 EchartHour.option.title.text = '小时折线图';
                 EchartHour.option.setXAxis(['6-7','7-8','8-9','9-10','10-11','11-12','12-13','13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21','21-22']);
@@ -220,6 +363,7 @@ $(document).ready(function () {
                     EchartHour.option.pushLegendAndSeries(`  第${i+1}类\n总数:${data.clusters[i].length}`,data.ave[i]);
                 }
                 EchartHour.myChart.resize();
+                $('#hour-list').empty();
                 for(var i=0;i<data.ave.length+1;i++){
                     $('#hour-list').append('<li></li>');
                 }

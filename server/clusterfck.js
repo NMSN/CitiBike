@@ -75,10 +75,10 @@ function onRequest(request, response) {
     }
     /* 根据星期情况聚类 */
     if (ajaxObj.category) {
-        category = ajaxObj.category;
-        var option = ajaxObj.option;
+        category = ajaxObj.category; // 层次数
+        var option = ajaxObj.option; // 用户使用量层次
         // console.log(option);
-        method = ajaxObj.method;
+        method = ajaxObj.method; // 聚类算法
         var sqlWeek;
         switch (option) {
             case '1':
@@ -231,6 +231,14 @@ function onRequest(request, response) {
                 clusters: clustersHour.arrGroup,
                 ave: clustersHour.ave
             }
+
+            for (var i = 0; i < result.clusters.length; i++) {
+                idArr[i] = [];
+                result.clusters[i].forEach(function (e) {
+                    idArr[i].push(e.cardno);
+                });
+            }
+            
             var resultHour = JSON.stringify(clustersHour);
             response.write(resultHour);
             response.end();
@@ -282,12 +290,11 @@ function onRequest(request, response) {
         const usage = ajaxObj.usage;
         console.log(startTime, endTime, usage);
         
-        const sqlLease = `select leasestation as stationId, count(*) as sum, count(*) as sum from b_leaseinfohis_brief201405
+        const sqlLease = `select leasestation as stationId, count(*) as sum from b_leaseinfohis_brief201405
             where DATE_FORMAT(LEASETIME,'%Y %m %d %H %i %S') > DATE_FORMAT('${startTime} 00:01:02','%Y %m %d %H %i %S') 
             and DATE_FORMAT(LEASETIME,'%Y %m %d %H %i %S') < DATE_FORMAT('${endTime}','%Y %m %d %H %i %S') 
             ${cardno ? `and cardno = ${cardno}`: ''}
             group by stationId`;
-        console.log(sqlLease);
         const sqlReturn = `select returnstation as stationId, count(*) as sum from b_leaseinfohis_brief201405
         where DATE_FORMAT(RETURNTIME,'%Y %m %d %H %i %S') > DATE_FORMAT('${startTime} 00:01:02','%Y %m %d %H %i %S') 
         and DATE_FORMAT(RETURNTIME,'%Y %m %d %H %i %S') < DATE_FORMAT('${endTime}','%Y %m %d %H %i %S') 
@@ -295,6 +302,7 @@ function onRequest(request, response) {
         group by stationId`;
         const result  = [];
         const sql = usage === 0 ? sqlLease : sqlReturn;
+        console.log(sql);
         connection.query(sql, function (error, results, fields) {
             if (error) throw error;
             for (let i = 0; i < results.length; i++) {

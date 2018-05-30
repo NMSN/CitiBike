@@ -233,6 +233,7 @@
         </ul>
 
         <div class="layui-tab-content">
+            <!-- 统计页 -->
             <div class="layui-tab-item layui-show">
                 <div id="stations-map"></div>
                 <div class="stat-content">
@@ -249,7 +250,7 @@
                 </div>
                 <div class="info-chart"></div>
             </div>
-
+            <!-- 聚类 -->
             <div class="layui-tab-item">
                 <div class="content">
                     <nav>
@@ -294,14 +295,14 @@
                         <!--<canvas id="canvas"></canvas>-->
                         <div class="citiBikeEcharts" id="week-model"></div>
                         <ul id="week-list"></ul>
+                        <div id="week-table"></div>
                         <div class="citiBikeEcharts" id="hour-model"></div>
                         <ul id="hour-list"></ul>
-                        <div id="week-table"></div>
                         <div id="hour-table"></div>
                     </div>
                 </div>
             </div>
-            
+            <!-- 个人 -->
             <div class="layui-tab-item">
                 <input class="user-search-input">
                 <button class="user-search-button">确定</button>
@@ -309,7 +310,7 @@
                 <div class="user-lease-bar"></div>
                 <div class="user-return-bar"></div>
             </div>
-
+            <!-- 热力 -->
             <div class="layui-tab-item">
                 <!-- <input class="user-search-input"> -->
                 <!-- <button class="user-search-button">确定</button> -->
@@ -348,7 +349,8 @@
     <script src="userMap.js"></script>
     <!-- <script src="dataCount.js"></script> -->
     <script src="dataStat.js"></script>
-    <script src="lib/marker.js"></script>
+    <!-- <script src="lib/marker.js"></script> -->
+    <script src="lib/baiduMarkers.js"></script>
     <script src="stationsMap.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
     <script src="heatMap.js"></script>
