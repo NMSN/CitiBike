@@ -11,25 +11,35 @@ map.setMapStyle({
 
 var data = [];
 
+var opts = {
+    width : 250,     // 信息窗口宽度
+    height: 40,     // 信息窗口高度
+    // title : "信息窗口" , // 信息窗口标题
+    enableMessage:true//设置允许信息窗发送短息
+   };
+
 for(var i=0;i<stations.length;i++){
     data.push({
        geometry:{
            type: 'Point',
            coordinates: [stations[i].point.lng,stations[i].point.lat]
-       }
+       },
+       name: stations[i].stationname,
+       stationId: stations[i].stationid,
     });
 }
 var dataSet = new mapv.DataSet(data);
 
 var options = {
-    fillStyle: 'rgba(255, 50, 50, 1)',
+    fillStyle: 'rgba(255, 50, 50, 1)', 
     globalAlpha: 1, // 透明度
     // shadowColor: 'rgba(255, 50, 50, 1)',
     // shadowBlur: 100,
     globalCompositeOperation: 'lighter',
     methods: {
         click: function (item) {
-            console.log(item);
+            // alert(`${item.stationId} ${item.name}`);
+            openInfo(`${item.stationId} ${item.name}`, item);
         }
     },
     size: 3,
@@ -38,5 +48,13 @@ var options = {
 
 var mapvLayer = new mapv.baiduMapLayer(map, dataSet, options);
 
+
+function openInfo(content,e){
+    // var p = e.target;
+    console.log(e);
+    var point = new BMap.Point(e.geometry.coordinates[0], e.geometry.coordinates[1]);
+    var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象 
+    map.openInfoWindow(infoWindow,point); //开启信息窗口
+}
 // mapvLayer.show(); // 显示图层
 // mapvLayer.hide(); // 删除图层

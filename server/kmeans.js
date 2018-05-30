@@ -84,9 +84,7 @@ var Kmeans = {
                 }
             }
             n++;
-            //console.log('arrGroup', arrGroup);
         } while (n < 100);
-        // console.log('arrGroup',arrGroup);
         return {
             arrGroup: arrGroup,
             ave: ave

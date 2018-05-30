@@ -65,8 +65,42 @@ var dataCount = [
     199414,
     187019,
 ];
+
+const weatherList = [
+'晴',
+'多云',
+'多云',
+'小到中雨~阵雨',
+'多云',
+'晴	东南风',
+'多云',
+'多云',
+'阵雨',
+'阵雨',
+'小雨~阴',
+'多云',
+'阵雨~大雨',
+'阴~多云',
+'多云',
+'阵雨~中雨',
+'中雨~阵雨',
+'阴	无持',
+'阵雨',
+'多云',
+'多云~阵雨',
+'阵雨~阴',
+'多云~阴',
+'多云~阵雨',
+'小到中雨~阴',
+'阴~多云',
+'多云',
+'晴',
+'多云',
+'多云~阴',
+'阵雨',
+];
 for(var i=0;i<dateList.length;i++){
-    dateList[i][1] = dataCount[i];
+    dateList[i][1] = weatherList[i];
 }
 
 var heatmapData = [];
@@ -327,7 +361,7 @@ var optionWeek = {
         }
     },
     legend: {
-        data:[
+        data: [
             '星期一',
             '星期二',
             '星期三',
@@ -384,7 +418,7 @@ var optionWeek = {
                 }
             },
             // areaStyle: {normal: {}},
-            data:[
+            data: [
                 743185,
                 722418,
                 794116,
@@ -398,6 +432,207 @@ var optionWeek = {
     ]
 };
 statWeek.setOption(optionWeek);
+
+var statDay = echarts.init($('.day-chart')[0]);
+var optionDay = {
+    title: {
+        text: '日使用量统计',
+        textStyle: {
+            fontSize: 12
+        }
+    },
+    tooltip : {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross',
+            label: {
+                backgroundColor: '#6a7985'
+            }
+        }
+    },
+    legend: {
+        data: dateList.map(item => item[0])
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        top: '15%',
+        containLabel: true
+    },
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            data : dateList.map(item => item[0])
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+
+        {
+            name:'使用量',
+            type:'line',
+            // stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+            // areaStyle: {normal: {}},
+            data: dataCount
+        }
+    ]
+};
+statDay.setOption(optionDay);
+
+var statWeather = echarts.init($('.weather-chart')[0]);
+var optionWeather = {
+    title: {
+        text: '天气统计',
+        textStyle: {
+            fontSize: 12
+        }
+    },
+    tooltip : {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross',
+            label: {
+                backgroundColor: '#6a7985'
+            }
+        }
+    },
+    legend: {
+        data: dateList.map(item => item[0])
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        top: '15%',
+        containLabel: true
+    },
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            data : dateList.map(item => item[0])
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'高温',
+            type:'line',
+            // stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+            // areaStyle: {normal: {}},
+            data: [
+                28,
+                31,
+                23,
+                20,
+                22,
+                24,
+                28,
+                30,
+                23,
+                24,
+                25,
+                26,
+                26,
+                27,
+                27,
+                28,
+                22,
+                22,
+                25,
+                29,
+                30,
+                26,
+                26,
+                30,
+                30,
+                31,
+                32,
+                34,
+                34,
+                32,
+                28,],
+        },
+        {
+            name:'低温',
+            type:'line',
+            // stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'top'
+                }
+            },
+            // areaStyle: {normal: {}},
+            data: [
+                17,
+                16,
+                16,
+                12,
+                12,
+                13,
+                17,
+                17,
+                17,
+                20,
+                16,
+                17,
+                20,
+                19,
+                17,
+                20,
+                17,
+                18,
+                18,
+                17,
+                20,
+                18,
+                20,
+                23,
+                22,
+                22,
+                21,
+                23,
+                23,
+                22,
+                21,
+            ],
+        }
+    ]
+};
+statWeather.setOption(optionWeather);
 
 var statInfo = echarts.init($('.info-chart')[0]);
 var optionInfo = {

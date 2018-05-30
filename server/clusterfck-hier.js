@@ -11,7 +11,6 @@ function hier(clustersH,layer){
     while(index < layer){
         while(queue.length > 0) {
             var node = queue.shift();//node为遍历节点
-            // console.log(node);
 
             if (node.size == 1) {
                 nodes.push(node);

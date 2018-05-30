@@ -1,312 +1,3 @@
-function EchartsLine(item) {
-    this.myChart = echarts.init(item);
-    var that = this;
-    this.option = {
-        title: {
-            text: '折线图',
-            left: 'left',
-            top: 6
-        },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'cross',
-                label: {
-                    backgroundColor: '#6a7985'
-                }
-            },
-            // formatter:'{a},{b},{c}'
-        },
-        backgroundColor: '#FFFFFF',
-        legend: {
-            data: ['']
-        },
-        color:[
-            'rgba(255,0,0,1)',
-            'rgba(0,255,0,1)',
-            'rgba(0,0,255,1)',
-            'rgba(125,125,0,1)',
-            'rgba(125,0,125,1)',
-            'rgba(0,125,125,1)'
-        ],
-        toolbox: {
-            feature: {
-                saveAsImage: {},
-                restore: {},
-                dataView: {},
-                magicType:{
-                    type: ['line', 'bar', 'stack', 'tiled']
-                }
-            },
-            top: 8
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis: [
-            {
-                type: 'category',
-                boundaryGap: false,
-                data: ['周一','周二','周三','周四','周五','周六','周日','节假日'],
-                // data: ['6-7','7-8','8-9','9-10','10-11','11-12','12-13','13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21','21-22'],
-            }
-        ],
-        yAxis: [
-            {
-                type: 'value',
-                min: 'dataMin'
-            }
-        ],
-        series: [],
-
-        setLegend: function(legend){
-            this.legend.data = legend;
-        },
-        pushLegend: function(legend){
-            this.legend.data.push(legend);
-            that.myChart.setOption(this);
-        },
-        setXAxis: function(xAxis){
-            this.xAxis[0].data = xAxis;
-            that.myChart.setOption(this,true);
-        },
-        pushSeries: function(name,data){
-            var object = {
-                name: name,
-                type: 'line',
-
-                label: {
-                    normal: {
-                        show: true
-                    }
-                },
-                data: data
-            };
-
-            this.series.push(object);
-            that.myChart.setOption(this);
-        },
-        pushLegendAndSeries: function(name,data){
-            this.legend.data.push(name);
-            var object = {
-                name: name,
-                type: 'line',
-                label: {
-                    normal: {
-                        show: true
-                    }
-                },
-                data: data
-            };
-            this.series.push(object);
-            that.myChart.setOption(this);
-        },
-        clearSeries:function(){
-            this.series = [];
-            that.myChart.setOption(this,true);
-        }
-
-    };
-    this.setOption = function(option){
-        this.myChart.setOption(option);
-    };
-
-}
-
-function EchartsPie(item) {
-    this.myChart = echarts.init(item);
-    var that = this;
-    this.option = {
-        title: {
-            text: '折线图',
-            left: 'left',
-            top: 6,
-            textStyle:{
-                fontSize:12
-            }
-        },
-        color:[
-            'rgba(255,0,0,1)',
-            'rgba(0,255,0,1)',
-            'rgba(0,0,255,1)',
-            'rgba(125,125,0,1)',
-            'rgba(125,0,125,1)',
-            'rgba(0,125,125,1)'
-        ],
-        // color:[
-        //     '#c23531',
-        //     '#2f4554',
-        //     '#61a0a8',
-        //     '#d48265',
-        //     '#91c7ae',
-        //     '#749f83',
-        //     '#ca8622',
-        //     '#bda29a',
-        //     '#6e7074',
-        //     '#546570',
-        //     '#c4ccd3'
-        // ],
-        tooltip: {
-            trigger: 'item',
-            formatter: "{a} <br/>{b}: {c}"
-        },
-        legend: {
-            show:false,
-            orient: 'vertical',
-            x: 'left',
-            data:[]
-        },
-        series: [
-            {
-                name:'占比',
-                type:'pie',
-                radius: ['0', '70%'],
-                avoidLabelOverlap: false,
-                label: {
-                    normal: {
-                        show: false,
-                        //position: 'center'
-                    },
-                    emphasis: {
-                        show: false,
-                        textStyle: {
-                            fontSize: '30',
-                            fontWeight: 'bold'
-                        }
-                    }
-                },
-                labelLine: {
-                    normal: {
-                        show: false
-                    }
-                },
-                data:[
-
-                ]
-            }
-        ],
-
-        setLegend: function(legend){
-            this.legend.data = legend;
-        },
-        pushLegend: function(legend){
-            this.legend.data.push(legend);
-            that.myChart.setOption(this);
-        },
-        setXAxis: function(xAxis){
-            this.xAxis[0].data = xAxis;
-            that.myChart.setOption(this,true);
-        },
-        pushSeries: function(name,data){
-            var object = {
-                name: name,
-                value: data
-            };
-            this.series[0].data.push(object);
-            that.myChart.setOption(this);
-        },
-        pushLegendAndSeries: function(name,data){
-            this.legend.data.push(name);
-            var object = {
-                name: name,
-                value: data
-            };
-            this.series[0].data.push(object);
-            that.myChart.setOption(this);
-        },
-        clearSeries:function(){
-            this.series = [];
-            that.myChart.setOption(this,true);
-        }
-
-    };
-    this.setOption = function(option){
-        this.myChart.setOption(option);
-    };
-
-}
-
-function EchartsRadar(item) {
-    this.myChart = echarts.init(item);
-    var that = this;
-    this.option = {
-        title: {
-            text: '基础雷达图'
-        },
-        tooltip: {},
-        legend: {
-            data: []
-        },
-        radar: {
-            // shape: 'circle',
-            name: {
-                textStyle: {
-                    color: '#000',
-                    // backgroundColor: '#999',
-                    borderRadius: 3,
-                    padding: [3, 5]
-                },
-                fontSize:10,
-            },
-            nameGap:0,
-            radius: 50,
-            startAngle:135,
-            indicator: [
-
-            ]
-        },
-        series: [{
-            name: '使用量占比',
-            type: 'radar',
-            // areaStyle: {normal: {}},
-            data: [
-
-            ]
-        }],
-        setLegend: function (legend) {
-            this.legend.data = legend;
-        },
-        pushLegend: function (legend) {
-            this.legend.data.push(legend);
-            that.myChart.setOption(this);
-        },
-        setXAxis: function (xAxis) {
-            this.xAxis[0].data = xAxis;
-            that.myChart.setOption(this, true);
-        },
-        pushRadar: function(name,data){
-            this.radar.indicator.push({name:name,max:data});
-            that.myChart.setOption(this);
-        },
-        pushSeries: function (name, data) {
-            var object = {
-                name: name,
-                value: data
-            };
-            this.series[0].data.push(object);
-            that.myChart.setOption(this);
-        },
-        pushLegendAndSeries: function (name, data) {
-            this.legend.data.push(name);
-            var object = {
-                name: name,
-                value: data
-            };
-            this.series[0].data.push(object);
-            that.myChart.setOption(this);
-        },
-        clearSeries: function () {
-            this.series = [];
-            that.myChart.setOption(this, true);
-        }
-    };
-    this.setOption = function(option){
-        this.myChart.setOption(option);
-    };
-}
 
 $(document).ready(function () {
     var map = new BMap.Map("map", {
@@ -323,6 +14,9 @@ $(document).ready(function () {
     var hourModel = $('#hour-model')[0];
     var EchartWeek = new EchartsLine(weekModel);
     var EchartHour = new EchartsLine(hourModel);
+
+
+
     $('.action').on('click',function(){
         EchartWeek.myChart.resize();
         var category = $('.category-table input').val();
@@ -347,6 +41,65 @@ $(document).ready(function () {
                 },
                 success: function (data) {
                     console.log(data);
+                    // console.log(data.clusters);
+                    const instance = data.clusters.map(item => {
+                        return item.slice(0, 3);
+                    })
+                    console.log(instance);
+                    const listArr = [];
+                    for(let i = 0; i < instance.length; i++) {
+                        listArr.push({
+                            id: `第${i+1}类`,
+                            x1: "-",
+                            x2: "-",
+                            x3: "-",
+                            x4: "-",
+                            x5: "-",
+                            x6: "-",
+                            x7: "-",
+                            xholi: "-",
+                        });
+                        for(let j = 0; j < instance[i].length; j++) {
+                            listArr.push({
+                                id: instance[i][j].cardno,
+                                x1: instance[i][j].arr[0],
+                                x2: instance[i][j].arr[1],
+                                x3: instance[i][j].arr[2],
+                                x4: instance[i][j].arr[3],
+                                x5: instance[i][j].arr[4],
+                                x6: instance[i][j].arr[5],
+                                x7: instance[i][j].arr[6],
+                                xholi: instance[i][j].arr[7],
+                            });
+                        }
+                    }
+                    console.log(listArr);
+
+                    layui.use('table', function(){
+                        var table = layui.table;
+                        
+                        table.render({
+                          elem: '#week-table',
+                          cols: [[ //标题栏
+                            {field: 'id', title: 'ID', width: 150, sort: true},
+                            {field: 'x1', title: 'w1', width: 80},
+                            {field: 'x2', title: 'w2', width: 80},
+                            {field: 'x3', title: 'w3', width: 80},
+                            {field: 'x4', title: 'w4', width: 80},
+                            {field: 'x5', title: 'w5', width: 80},
+                            {field: 'x6', title: 'w6', width: 80},
+                            {field: 'x7', title: 'w7', width: 80},
+                            {field: 'xholi', title: 'wholi', width: 80},
+                          ]]
+                          ,data: listArr
+                          //,skin: 'line' //表格风格
+                          ,even: true
+                          //,page: true //是否显示分页
+                          //,limits: [5, 7, 10]
+                          ,limit: (instance.length+1)*3 //每页默认显示的数量
+                        });
+                      });
+
                     EchartWeek.option.clearSeries();
                     $('#week-model').show();
                     EchartWeek.option.title.text = '日历折线图';
@@ -418,6 +171,7 @@ $(document).ready(function () {
                                     });
                                 }
                             }
+                            console.log(stations);
                             var dataSet = new mapv.DataSet(stations);
                             var mapvLayer = new mapv.baiduMapLayer(map, dataSet);
                         }
@@ -441,24 +195,7 @@ $(document).ready(function () {
         $('#hour-list').hide();
     });
 
-    $('.user-search-button').on('click',function(){
-        const inputValue = $('.user-search-input').val();
-        // console.log(inputValue);
-        $.ajax({
-            type: 'GET',
-            url: 'http://127.0.0.1:8082/',
-            data: {
-                usrIndex: inputValue,
-            },
-            dataType: 'json',
-            error: function () {
-                alert("Request failed.");
-            },
-            success: function (data) {
-                alert(JSON.parse(data));
-            },
-        });
-    });
+
     EchartWeek.myChart.on('click',function(params){
         $('#hour-model').show();
         console.log(params.seriesIndex);

@@ -91,14 +91,15 @@
             background: #005792;
         }
         .bar-chart{
-            width:100%;
-            height:8.27rem;
+            width: 100%;
+            height: 8.27rem;
             margin-bottom: 1rem;
             background: #FFFFFF;
             /*margin-top: 1rem;*/
         }
         .echarts{
             display: flex;
+            width: 60rem;
             justify-content: center;
             flex-wrap: wrap;
             flex-grow: 1;
@@ -176,7 +177,7 @@
             width: 100%;
             height: 20rem;
         }
-        .hour-chart,.week-chart{
+        .hour-chart,.week-chart,.day-chart,.weather-chart{
             width: 100%;
             height: 20rem;
         }
@@ -187,6 +188,33 @@
         #stations-map{
             width: 100%;
             height: 20rem;
+        }
+        #user-map{
+            width: 60rem;
+            height: 20rem;
+        }
+        .layui-tab-item {
+            display: block;
+            visibility: hidden;
+            position: absolute;
+        }
+        .layui-show {
+            visibility: visible;
+        }
+        .user-lease-bar,.user-return-bar {
+            width:800px;
+            height: 400px;
+            /* background: red; */
+            margin: 20px;
+        }
+        /* #week-table,#hour-table { */
+            /* width: 800px;
+            height: 500px; */
+            /* background: grey; */
+        /* } */
+        #heat-map {
+            width: 800px;
+            height: 400px;
         }
     </style>
 
@@ -201,6 +229,7 @@
             <li class="layui-this">统计</li>
             <li>聚类</li>
             <li>查询</li>
+            <li>热力</li>
         </ul>
 
         <div class="layui-tab-content">
@@ -212,15 +241,15 @@
                         <!--<div class="date-chart"></div>-->
                     </div>
                     <div class="stat-line">
-
+                        <div class="day-chart"></div>
                         <div class="hour-chart"></div>
                         <div class="week-chart"></div>
+                        <div class="weather-chart"></div>
                     </div>
                 </div>
-
-
                 <div class="info-chart"></div>
             </div>
+
             <div class="layui-tab-item">
                 <div class="content">
                     <nav>
@@ -257,7 +286,7 @@
                             <!--<p>用户总计(人)：<span class="user"></span></p>-->
                             <!--<p>总天数(天)：<span class="days"></span></p>-->
                         <!--</div>-->
-                        <!--<div class="bar-chart" id="bar-chart"></div>-->
+                        <!-- <div class="bar-chart" id="bar-chart"></div> -->
                     </nav>
 
                     <div class="echarts">
@@ -267,12 +296,41 @@
                         <ul id="week-list"></ul>
                         <div class="citiBikeEcharts" id="hour-model"></div>
                         <ul id="hour-list"></ul>
+                        <div id="week-table"></div>
+                        <div id="hour-table"></div>
                     </div>
                 </div>
             </div>
+            
             <div class="layui-tab-item">
                 <input class="user-search-input">
                 <button class="user-search-button">确定</button>
+                <div id="user-map"></div> 
+                <div class="user-lease-bar"></div>
+                <div class="user-return-bar"></div>
+            </div>
+
+            <div class="layui-tab-item">
+                <!-- <input class="user-search-input"> -->
+                <!-- <button class="user-search-button">确定</button> -->
+                <form class="layui-form" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">选择框</label>
+                        <div class="layui-input-block">
+                            <select name="city" lay-verify="" id="heatmap-type">
+                                <option value="">请选择</option>
+                                <option value="0">借车</option>
+                                <option value="1">还车</option>
+                            </select>     
+                        </div>
+                    </div>
+                </form>
+                <input type="text" class="layui-input" id="heatmap-time">
+                <div id="heat-map"></div> 
+                <div id="r-result">
+                    <input type="button"  onclick="openHeatmap();" value="显示热力图"/>
+                    <input type="button"  onclick="closeHeatmap();" value="关闭热力图"/>
+                </div>
             </div>
         </div>
     </div>
@@ -280,15 +338,21 @@
 
     <script src="lib/jquery-3.2.1.js"></script>
     <script src="lib/echarts.js"></script>
-    <script src="http://api.map.baidu.com/api?v=2.0&ak=cTPMvvh70cpFaigeCtpj6gXOefm0PplL"></script>
+    <script src="http://api.map.baidu.com/api?v=3.0&ak=cTPMvvh70cpFaigeCtpj6gXOefm0PplL"></script>
+    <script src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
     <script src="http://mapv.baidu.com/build/mapv.min.js"></script>
     <script src="lib/layui/layui.all.js"></script>
 
+    <script src="echartsClass.js"></script>
     <script src="index.js"></script>
-    <script src="dataCount.js"></script>
+    <script src="userMap.js"></script>
+    <!-- <script src="dataCount.js"></script> -->
     <script src="dataStat.js"></script>
     <script src="lib/marker.js"></script>
-    <script src="map.js"></script>
+    <script src="stationsMap.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <script src="heatMap.js"></script>
+    <!-- <script src="table.js"></script> -->
     <script>
         layui.use('element', function(){
             var $ = layui.jquery
@@ -331,6 +395,7 @@
             });
 
         });
+     
     </script>
 
 </body>

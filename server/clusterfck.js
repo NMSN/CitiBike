@@ -18,40 +18,25 @@ var sqlCountAllInfo = 'select count(*) from b_leaseinfohis_brief201405';
 var sqlCountAllUsers = 'select count(*) from week_holiratio201405';
 var sqlCountDays = 'select count(distinct leaseday) from b_leaseinfohis_brief201405';
 
+// 按星期查询sql
+var sqlRatio10_20 = 'select * from week_holiratio201405 where sum>=10 and sum<20 SUM desc;';
+var sqlRatio20_30 = 'select * from week_holiratio201405 where sum>=20 and sum<30 SUM desc;';
+var sqlRatio30_40 = 'select * from week_holiratio201405 where sum>=30 and sum<40 SUM desc;';
+var sqlRatio40_50 = 'select * from week_holiratio201405 where sum>=40 and sum<50 SUM desc;';
+var sqlRatio50_75 = 'select * from week_holiratio201405 where sum>=50 and sum<75 SUM desc;';
+var sqlRatio75_100 = 'select * from week_holiratio201405 where sum>=75 and sum<100 SUM desc;';
+var sqlRatio100_150 = 'select * from week_holiratio201405 where sum>=100 and sum<150 SUM desc;';
+var sqlRatio150_200 = 'select * from week_holiratio201405 where sum>=150 and sum<200 SUM desc;';
+var sqlRatio200_ = 'select * from week_holiratio201405 where sum>=200;';
 
-// var sqlCount0_10 = 'select count(*) from week_holiratio201405 where sum<10;';
-// var sqlCount10_20 = 'select count(*) from week_holiratio201405 where sum>=10 and sum<20;';
-// var sqlCount20_30 = 'select count(*) from week_holiratio201405 where sum>=20 and sum<30;';
-// var sqlCount30_40 = 'select count(*) from week_holiratio201405 where sum>=30 and sum<40;';
-// var sqlCount40_50 = 'select count(*) from week_holiratio201405 where sum>=40 and sum<50;';
-// var sqlCount50_75 = 'select count(*) from week_holiratio201405 where sum>=50 and sum<75;';
-// var sqlCount75_100 = 'select count(*) from week_holiratio201405 where sum>=75 and sum<100;';
-// var sqlCount100_150 = 'select count(*) from week_holiratio201405 where sum>=100 and sum<150;';
-// var sqlCount150_200 = 'select count(*) from week_holiratio201405 where sum>=150 and sum<200;';
-// var sqlCount200_ = 'select count(*) from week_holiratio201405 where sum>=200;';
-
-
-
-
-
-var sqlRatio10_20 = 'select CARDNO,X1,X2,X3,X4,X5,X6,X7,XHOLI from week_holiratio201405 where sum>=10 and sum<20;';
-var sqlRatio20_30 = 'select CARDNO,X1,X2,X3,X4,X5,X6,X7,XHOLI from week_holiratio201405 where sum>=20 and sum<30;';
-var sqlRatio30_40 = 'select CARDNO,X1,X2,X3,X4,X5,X6,X7,XHOLI from week_holiratio201405 where sum>=30 and sum<40;';
-var sqlRatio40_50 = 'select CARDNO,X1,X2,X3,X4,X5,X6,X7,XHOLI from week_holiratio201405 where sum>=40 and sum<50;';
-var sqlRatio50_75 = 'select CARDNO,X1,X2,X3,X4,X5,X6,X7,XHOLI from week_holiratio201405 where sum>=50 and sum<75;';
-var sqlRatio75_100 = 'select CARDNO,X1,X2,X3,X4,X5,X6,X7,XHOLI from week_holiratio201405 where sum>=75 and sum<100;';
-var sqlRatio100_150 = 'select CARDNO,X1,X2,X3,X4,X5,X6,X7,XHOLI from week_holiratio201405 where sum>=100 and sum<150;';
-var sqlRatio150_200 = 'select CARDNO,X1,X2,X3,X4,X5,X6,X7,XHOLI from week_holiratio201405 where sum>=150 and sum<200;';
-var sqlRatio200_ = 'select CARDNO,X1,X2,X3,X4,X5,X6,X7,XHOLI from week_holiratio201405 where sum>=200;';
-
-
-var hsqlRatio20_50 = 'select CARDNO,HOUR6,HOUR7,HOUR8,HOUR9,HOUR10,HOUR11,HOUR12,HOUR13,HOUR14,HOUR15,HOUR16,HOUR17,HOUR18,HOUR19,HOUR20,HOUR21 from hour24ratio_full where sum>=20 and sum<50;';
-var hsqlRatio50_100 = 'select CARDNO,HOUR6,HOUR7,HOUR8,HOUR9,HOUR10,HOUR11,HOUR12,HOUR13,HOUR14,HOUR15,HOUR16,HOUR17,HOUR18,HOUR19,HOUR20,HOUR21 from hour24ratio_full where sum>=50 and sum<100;';
-var hsqlRatio100_150 = 'select CARDNO,HOUR6,HOUR7,HOUR8,HOUR9,HOUR10,HOUR11,HOUR12,HOUR13,HOUR14,HOUR15,HOUR16,HOUR17,HOUR18,HOUR19,HOUR20,HOUR21 from hour24ratio_full where sum>=100 and sum<150;';
-var hsqlRatio150_200 = 'select CARDNO,HOUR6,HOUR7,HOUR8,HOUR9,HOUR10,HOUR11,HOUR12,HOUR13,HOUR14,HOUR15,HOUR16,HOUR17,HOUR18,HOUR19,HOUR20,HOUR21 from hour24ratio_full where sum>=150 and sum<200;';
-var hsqlRatio200_250 = 'select CARDNO,HOUR6,HOUR7,HOUR8,HOUR9,HOUR10,HOUR11,HOUR12,HOUR13,HOUR14,HOUR15,HOUR16,HOUR17,HOUR18,HOUR19,HOUR20,HOUR21 from hour24ratio_full where sum>=200 and sum<250;';
-var hsqlRatio250_300 = 'select CARDNO,HOUR6,HOUR7,HOUR8,HOUR9,HOUR10,HOUR11,HOUR12,HOUR13,HOUR14,HOUR15,HOUR16,HOUR17,HOUR18,HOUR19,HOUR20,HOUR21 from hour24ratio_full where sum>=250 and sum<300;';
-var hsqlRatio300_ = 'select CARDNO,HOUR6,HOUR7,HOUR8,HOUR9,HOUR10,HOUR11,HOUR12,HOUR13,HOUR14,HOUR15,HOUR16,HOUR17,HOUR18,HOUR19,HOUR20,HOUR21 from hour24ratio_full where sum>=300;';
+// 按小时查询sql
+var hsqlRatio20_50 = 'select * from hourratio201405 where sum>=20 and sum<50 SUM desc;';
+var hsqlRatio50_100 = 'select * from hourratio201405 where sum>=50 and sum<100 SUM desc;';
+var hsqlRatio100_150 = 'select * from hourratio201405 where sum>=100 and sum<150 SUM desc;';
+var hsqlRatio150_200 = 'select * from hourratio201405 where sum>=150 and sum<200 SUM desc;';
+var hsqlRatio200_250 = 'select * from hourratio201405 where sum>=200 and sum<250 SUM desc;';
+var hsqlRatio250_300 = 'select * from hourratio201405 where sum>=250 and sum<300 SUM desc;';
+var hsqlRatio300_ = 'select * from hourratio201405 where sum>=300 SUM desc;';
 
 
 var result;
@@ -75,24 +60,24 @@ var method;
 function onRequest(request, response) {
     console.log("Request received.");
     response.writeHead(200, {
-        "Content-Type": 'text/plain',
+        "Content-Type": 'text/html',
         'charset': 'utf-8',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS'
     });//可以解决跨域的请求
     // console.log(url.parse(request.url,true).query);
     var ajaxObj = url.parse(request.url, true).query;
-    console.log(ajaxObj);
+    // console.log(ajaxObj);
     if (ajaxObj.init) {
         var resultCount = JSON.stringify(initCount);
-        response.writeHead(200, {'Content-Type': 'text/html;charset:utf-8'});
         response.write(resultCount);
         response.end();
     }
+    /* 根据星期情况聚类 */
     if (ajaxObj.category) {
         category = ajaxObj.category;
         var option = ajaxObj.option;
-        console.log(option);
+        // console.log(option);
         method = ajaxObj.method;
         var sqlWeek;
         switch (option) {
@@ -127,13 +112,12 @@ function onRequest(request, response) {
                 console.log('switch error', option);
         }
 
-
-        // console.log(sqlWeek);
         connection.query(sqlWeek, function (error, results, fields) {//第一次聚类
             if (error) throw error;
             self = [];
             for (var i = 0; i < results.length; i++) {
                 self[i] = results[i];
+                delete self[i].SUM;
                 // console.log(self[i]);
             }
             selfArr = [];
@@ -149,7 +133,7 @@ function onRequest(request, response) {
                     }
                 }
             }
-            // console.log('selfArr',selfArr);
+            console.log('selfArr',selfArr);
             var clusters;
             if(method == 1){
                 console.log('k-means');
@@ -162,8 +146,7 @@ function onRequest(request, response) {
 
             result = {
                 clusters: clusters.arrGroup,
-                ave: clusters.ave,
-                stations: []
+                ave: clusters.ave,  
             };
             // var resultOut = JSON.stringify(result);
             for (var i = 0; i < result.clusters.length; i++) {
@@ -175,11 +158,11 @@ function onRequest(request, response) {
             // console.log(idArr[i]);
 
             var resultOut = JSON.stringify(result);
-            response.writeHead(200, {'Content-Type': 'text/html;charset:utf-8'});
             response.write(resultOut);
             response.end();
         });
     }
+    /* 获取站点聚类结果 */
     if (ajaxObj.idArr) {
         var stations = [];
         for (var i = 0; i < idArr.length; i++) {
@@ -193,24 +176,24 @@ function onRequest(request, response) {
             connection.query(sqlCoords, function (error, results, fields) {
                 if (error) throw error;
                 // var index = i;
-                console.log(results);
+                // console.log(results);
                 // console.log(i);
                 stations.push(results);
                 if (stations.length >= idArr.length) {
                     var resultOut = JSON.stringify(stations);
-                    response.writeHead(200, {'Content-Type': 'text/html;charset:utf-8'});
                     response.write(resultOut);
                     response.end();
                 }
             });
         }
     }
+    /* 第二次聚类 */
     if (ajaxObj.seriesIndex) {
         var seriesIndex = ajaxObj.seriesIndex;
         // connection.connect();
         var instring = "'" + idArr[seriesIndex].join("','") + "'";
-        // var sqlHour = ' select * from hour24ratio_full300 '+
-        var sqlHour = `select CARDNO,HOUR6,HOUR7,HOUR8,HOUR9,HOUR10,HOUR11,HOUR12,HOUR13,HOUR14,HOUR15,HOUR16,HOUR17,HOUR18,HOUR19,HOUR20,HOUR21
+        // var sqlHour = ' select * from hourratio201405300 '+
+        var sqlHour = `select *
              from hourratio201405 
             where cardno in (${instring})`;
 
@@ -219,6 +202,8 @@ function onRequest(request, response) {
             self2 = [];
             for (var i = 0; i < results.length; i++) {
                 self2[i] = results[i];
+                delete self2[i].SUM;
+                console.log(self2[i]);
             }
             selfArr2 = [];
             for (var i = 0; i < self2.length; i++) {
@@ -247,22 +232,21 @@ function onRequest(request, response) {
                 ave: clustersHour.ave
             }
             var resultHour = JSON.stringify(clustersHour);
-            response.writeHead(200, {'Content-Type': 'text/html;charset:utf-8'});
             response.write(resultHour);
             response.end();
         });
         // connection.end();
 
     }
+    /* 查询人相关信息 */
     if (ajaxObj.usrIndex) {
         const userId = ajaxObj.usrIndex;
-        /* 查询人相关信息 */
         const sqlLease = `select leasestation,STATIONNAME,BAIDU_X,BAIDU_Y,SUM from baidu_xy a
                         join (
                             select count(*) as sum,LEASESTATION from b_leaseinfohis_brief201405
                         where cardno = ${userId}
                         group by LEASESTATION) b
-                        on a.STATIONID = b.LEASESTATION;`;
+                        on a.STATIONID = b.LEASESTATION order by SUM desc;`;
         const result  = {};
         // const sql = `select * from week_holi_201405 where CARDNO = ${userId}`;
         connection.query(sqlLease, function (error, results, fields) {
@@ -276,22 +260,51 @@ function onRequest(request, response) {
                             select count(*) as sum,RETURNSTATION from b_leaseinfohis_brief201405
                         where cardno = ${userId}
                         group by RETURNSTATION) b
-                        on a.STATIONID = b.RETURNSTATION;`;
+                        on a.STATIONID = b.RETURNSTATION order by SUM desc;`;
             connection.query(sqlReturn, function (error, results, fields) {
                 if (error) throw error;
                 result.return = [];
                 for (let i = 0; i < results.length; i++) {
                     result.return[i] = results[i];
-                    console.log(results[i]);
+                    // console.log(results[i]);
 
                 }
             const res = JSON.stringify(result);
-            response.writeHead(200, {'Content-Type': 'text/html;charset:utf-8'});
             response.write(JSON.stringify(result),'utf-8');
             response.end();
             });
         });
-    } 
+    }
+    if (ajaxObj.heatmapTime) {
+        const startTime = ajaxObj.heatmapTime.split('~')[0];
+        const endTime = ajaxObj.heatmapTime.split('~')[1];
+        const cardno = ajaxObj.cardno;
+        const usage = ajaxObj.usage;
+        console.log(startTime, endTime, usage);
+        
+        const sqlLease = `select leasestation as stationId, count(*) as sum, count(*) as sum from b_leaseinfohis_brief201405
+            where DATE_FORMAT(LEASETIME,'%Y %m %d %H %i %S') > DATE_FORMAT('${startTime} 00:01:02','%Y %m %d %H %i %S') 
+            and DATE_FORMAT(LEASETIME,'%Y %m %d %H %i %S') < DATE_FORMAT('${endTime}','%Y %m %d %H %i %S') 
+            ${cardno ? `and cardno = ${cardno}`: ''}
+            group by stationId`;
+        console.log(sqlLease);
+        const sqlReturn = `select returnstation as stationId, count(*) as sum from b_leaseinfohis_brief201405
+        where DATE_FORMAT(RETURNTIME,'%Y %m %d %H %i %S') > DATE_FORMAT('${startTime} 00:01:02','%Y %m %d %H %i %S') 
+        and DATE_FORMAT(RETURNTIME,'%Y %m %d %H %i %S') < DATE_FORMAT('${endTime}','%Y %m %d %H %i %S') 
+        ${cardno ? `and cardno = ${cardno}`: ''}
+        group by stationId`;
+        const result  = [];
+        const sql = usage === 0 ? sqlLease : sqlReturn;
+        connection.query(sql, function (error, results, fields) {
+            if (error) throw error;
+            for (let i = 0; i < results.length; i++) {
+                result[i] = results[i];
+            }
+            response.write(JSON.stringify(result,'utf-8'));
+            response.end();
+        });
+        
+    }
 
 }
 
