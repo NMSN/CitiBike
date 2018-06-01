@@ -19,12 +19,13 @@ $(document).ready(function () {
 
 
 
-    $('.action').on('click',function(){
+    $('.cluster-confirm').on('click',function(){
         EchartWeek.myChart.resize();
         var category = $('.category-table input').val();
         // console.log(category);
         var option = $('.category').val();
         var method = $('.method').val();
+        const usage = $('.cluster-usage').val();
         // console.log(option);
         if(category.length == ''){
             alert('请输入K值');
@@ -36,6 +37,7 @@ $(document).ready(function () {
                     category: category,
                     option: option,
                     method: method,
+                    usage: usage,
                 },
                 dataType: 'json',
                 error: function () {
@@ -196,7 +198,7 @@ $(document).ready(function () {
         }
     });
 
-    $('.empty').on('click',function(){
+    $('.cluster-empty').on('click',function(){
         EchartWeek.option.clearSeries();
         EchartHour.option.clearSeries();
         $('#week-model').hide();

@@ -18,26 +18,18 @@ var sqlCountAllInfo = 'select count(*) from b_leaseinfohis_brief201405';
 var sqlCountAllUsers = 'select count(*) from week_holiratio201405';
 var sqlCountDays = 'select count(distinct leaseday) from b_leaseinfohis_brief201405';
 
-// 按星期查询sql
-var sqlRatio10_20 = 'select * from week_holiratio201405 where sum>=10 and sum<20 SUM desc;';
-var sqlRatio20_30 = 'select * from week_holiratio201405 where sum>=20 and sum<30 SUM desc;';
-var sqlRatio30_40 = 'select * from week_holiratio201405 where sum>=30 and sum<40 SUM desc;';
-var sqlRatio40_50 = 'select * from week_holiratio201405 where sum>=40 and sum<50 SUM desc;';
-var sqlRatio50_75 = 'select * from week_holiratio201405 where sum>=50 and sum<75 SUM desc;';
-var sqlRatio75_100 = 'select * from week_holiratio201405 where sum>=75 and sum<100 SUM desc;';
-var sqlRatio100_150 = 'select * from week_holiratio201405 where sum>=100 and sum<150 SUM desc;';
-var sqlRatio150_200 = 'select * from week_holiratio201405 where sum>=150 and sum<200 SUM desc;';
-var sqlRatio200_ = 'select * from week_holiratio201405 where sum>=200;';
+const sqlArr = [
+    'sum>=10 and sum<20',
+    'sum>=20 and sum<30',
+    'sum>=30 and sum<40',
+    'sum>=40 and sum<50',
+    'sum>=50 and sum<75',
+    'sum>=75 and sum<100',
+    'sum>=100 and sum<150',
+    'sum>=150 and sum<200',
+    'sum>=200',
 
-// 按小时查询sql
-var hsqlRatio20_50 = 'select * from hourratio201405 where sum>=20 and sum<50 SUM desc;';
-var hsqlRatio50_100 = 'select * from hourratio201405 where sum>=50 and sum<100 SUM desc;';
-var hsqlRatio100_150 = 'select * from hourratio201405 where sum>=100 and sum<150 SUM desc;';
-var hsqlRatio150_200 = 'select * from hourratio201405 where sum>=150 and sum<200 SUM desc;';
-var hsqlRatio200_250 = 'select * from hourratio201405 where sum>=200 and sum<250 SUM desc;';
-var hsqlRatio250_300 = 'select * from hourratio201405 where sum>=250 and sum<300 SUM desc;';
-var hsqlRatio300_ = 'select * from hourratio201405 where sum>=300 SUM desc;';
-
+];
 
 var result;
 
@@ -50,11 +42,13 @@ var idArr2 = [];
 var self2 = [];
 var selfArr2 = [];
 
-var category;//K值
+var category;// K值
 
 var initCount = {};
 
 var method;
+
+var usage; // 借还车方式
 
 
 function onRequest(request, response) {
@@ -79,38 +73,15 @@ function onRequest(request, response) {
         var option = ajaxObj.option; // 用户使用量层次
         // console.log(option);
         method = ajaxObj.method; // 聚类算法
+        usage = ajaxObj.usage; // 借还车
+        
         var sqlWeek;
-        switch (option) {
-            case '1':
-                sqlWeek = sqlRatio10_20;
-                break;
-            case '2':
-                sqlWeek = sqlRatio20_30;
-                break;
-            case '3':
-                sqlWeek = sqlRatio30_40;
-                break;
-            case '4':
-                sqlWeek = sqlRatio40_50;
-                break;
-            case '5':
-                sqlWeek = sqlRatio50_75;
-                break;
-            case '6':
-                sqlWeek = sqlRatio75_100;
-                break;
-            case '7':
-                sqlWeek = sqlRatio100_150;
-                break;
-            case '8':
-                sqlWeek = sqlRatio150_200;
-                break;
-            case '9':
-                sqlWeek = sqlRatio200_;
-                break;
-            default:
-                console.log('switch error', option);
+        if(usage === 1) {
+            sqlWeek = `select * from week_holiratio201405 where ${sqlArr[option - 1]} ORDER BY SUM desc;`
+        } else {
+            sqlWeek = `select * from week_holiratio201405r where ${sqlArr[option - 1]} ORDER BY SUM desc;`
         }
+        console.log(sqlWeek);
 
         connection.query(sqlWeek, function (error, results, fields) {//第一次聚类
             if (error) throw error;
@@ -166,13 +137,23 @@ function onRequest(request, response) {
     if (ajaxObj.idArr) {
         var stations = [];
         for (var i = 0; i < idArr.length; i++) {
-            var sqlCoords = `select leasestation,STATIONNAME,BAIDU_X,BAIDU_Y,SUM from baidu_xy a
-                        join (
-                            select count(*) as sum,LEASESTATION from b_leaseinfohis_brief201405
-                        where cardno in (${idArr[i]})
-                        group by LEASESTATION) b
-                        on a.STATIONID = b.LEASESTATION;`;
-
+            var sqlCoords;
+            if (usage === 1) {
+                sqlCoords = `select leasestation,STATIONNAME,BAIDU_X,BAIDU_Y,SUM from baidu_xy a
+                    join (
+                        select count(*) as sum,LEASESTATION from b_leaseinfohis_brief201405
+                    where cardno in (${idArr[i]})
+                    group by LEASESTATION) b
+                    on a.STATIONID = b.LEASESTATION;`;
+            } else {
+                sqlCoords = `select returnstation,STATIONNAME,BAIDU_X,BAIDU_Y,SUM from baidu_xy a
+                    join (
+                        select count(*) as sum,RETURNSTATION from b_leaseinfohis_brief201405
+                    where cardno in (${idArr[i]})
+                    group by RETURNSTATION) b
+                    on a.STATIONID = b.RETURNSTATION;`;
+            }
+            console.log(sqlCoords);
             connection.query(sqlCoords, function (error, results, fields) {
                 if (error) throw error;
                 // var index = i;
@@ -190,13 +171,18 @@ function onRequest(request, response) {
     /* 第二次聚类 */
     if (ajaxObj.seriesIndex) {
         var seriesIndex = ajaxObj.seriesIndex;
-        // connection.connect();
         var instring = "'" + idArr[seriesIndex].join("','") + "'";
-        // var sqlHour = ' select * from hourratio201405300 '+
-        var sqlHour = `select *
-             from hourratio201405 
+        var sqlHour;
+        if (usage === 1) {
+            sqlHour = `select *
+                from hourratio201405 
             where cardno in (${instring})`;
-
+        } else {
+            sqlHour = `select *
+                from hourratio201405r
+            where cardno in (${instring})`;
+        }
+        console.log(sqlHour);
         connection.query(sqlHour, function (error, results, fields) {
             if (error) throw error;
             self2 = [];
@@ -301,7 +287,7 @@ function onRequest(request, response) {
         ${cardno ? `and cardno = ${cardno}`: ''}
         group by stationId`;
         const result  = [];
-        const sql = usage === 0 ? sqlLease : sqlReturn;
+        const sql = usage === 1 ? sqlLease : sqlReturn;
         console.log(sql);
         connection.query(sql, function (error, results, fields) {
             if (error) throw error;
