@@ -103,10 +103,11 @@ function onRequest(request, response) {
                 console.timeEnd('diana');
             }
 
-            result = {
+            const result = {
                 clusters: clusters.arrGroup,
                 ave: clusters.ave,  
             };
+            idArr = [];
             for (var i = 0; i < result.clusters.length; i++) {
                 idArr[i] = [];
                 result.clusters[i].forEach(function (e) {
@@ -167,12 +168,11 @@ function onRequest(request, response) {
                 clustersHour = diana.dianaGroup(hourClusterParams, category);
                 console.timeEnd('diana');
             }
-
-            clustersHour = {
+            const result = {
                 clusters: clustersHour.arrGroup,
                 ave: clustersHour.ave
-            }
-
+            };
+            idArr = [];
             for (var i = 0; i < result.clusters.length; i++) {
                 idArr[i] = [];
                 result.clusters[i].forEach(function (e) {
@@ -180,7 +180,7 @@ function onRequest(request, response) {
                 });
             }
             
-            var resultHour = JSON.stringify(clustersHour);
+            var resultHour = JSON.stringify(result);
             response.write(resultHour);
             console.timeEnd('sqlHour');
             response.end();
