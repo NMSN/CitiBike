@@ -184,7 +184,12 @@ function EchartsBar(item) {
           }
       ],
       series: [],
-
+      setTitle: function(title){
+        this.title.text = title;
+      },
+      setColor: function(color) {
+        this.color = [`${color}`];
+      },
       setLegend: function(legend){
           this.legend.data = legend;
       },

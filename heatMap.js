@@ -38,50 +38,83 @@
 		其中 key 表示插值的位置, 0~1. 
 		    value 为颜色值. 
      */
-	heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
+    const heatMapParams = {
+        draw: 'heatmap',
+        size: 5, // 每个热力点半径大小
+        gradient: { // 热力图渐变色
+            0.1: "rgb(0,0,255)",
+            0.5: "rgb(0,255,0)",
+            0.8: "yellow",
+            1.0: "rgb(255,0,0)"
+        },
+        // max: 100, // 最大权重值
+    };
+	heatmapOverlay = new BMapLib.HeatmapOverlay(heatMapParams);
     map.addOverlay(heatmapOverlay);
     
 	// heatmapOverlay.setDataSet({data:points,max:100});
 	//是否显示热力图
     function openHeatmap(){
+        const heatMapTime = $('#heatmap-time').val();
+        const heatMapType = $('#heatmap-type').val();
+        const userId = $('#heatmap-id').val();
         console.log($('#heatmap-time').val());
         console.log($('#heatmap-type').val());
+        console.log($('#heatmap-id').val());
 
         $.ajax({
             type: 'GET',
             url: 'http://127.0.0.1:8082/',
             data: {
-                heatmapTime: `${$('#heatmap-time').val()}`,
-                usage: `${$('#heatmap-type').val()}`,
+                heatmapTime: heatMapTime,
+                usage: heatMapType,
+                userId:userId,
             },
             dataType: 'json',
             error: function () {
                 alert("Request failed.");
             },
             success: function (data) {
-                console.log(data);
+                // console.log(data);
+                const mixResult = [];
+                let max = 0;
                 for (let i=0;i<data.length;i++) {
                     for (let j=0;j<stations.length;j++) {
                         if(data[i].stationId === stations[j].stationId) {
-                            stations[j].sum = data[i].sum;
+                            // data[i].
+                            // stations[j].sum = data[i].sum;
+                            max = data[i].sum > max ? data[i].sum : max;
+                            mixResult[i] = {
+                                ...stations[j],
+                                ...data[i],
+                            };
                         }
-                        // console.log(stations[j]);
                     }
                 }
-                console.log(stations);
+                console.log(mixResult);
+                // console.log('max', max);
+                // console.log('userId',userId ? 20: 5000);
                 heatmapOverlay.setDataSet({
-                    data: stations.map(item => ({
+                    data: mixResult
+                    .filter(item => {
+                        return item.baiduX && item.baiduY && item.sum;
+                    })
+                    .map(item => ({
                         lng: item.baiduX,
                         lat: item.baiduY,
                         count: item.sum,
                     })),
-                    max: 5000
+                    max: max,
                 });
             }
         });
         heatmapOverlay.show();
     }
 	function closeHeatmap(){
+        heatmapOverlay.setDataSet({
+            data: [],
+            max: 0,
+        });
         heatmapOverlay.hide();
     }
 	closeHeatmap();

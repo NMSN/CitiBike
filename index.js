@@ -4,7 +4,7 @@ $(document).ready(function () {
         enableMapClick: false
     });    // 创建Map实例
     map.centerAndZoom(new BMap.Point(120.19, 30.26), 13);  // 初始化地图,设置中心点坐标和地图级别
- // map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+    map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
     map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT}));// 左上角，添加比例尺
     map.addControl(new BMap.NavigationControl());//左上角，添加默认缩放平移控件
     map.setMapStyle({
@@ -14,20 +14,15 @@ $(document).ready(function () {
     var hourModel = $('#hour-model')[0];
     var EchartWeek = new EchartsLine(weekModel);
     var EchartHour = new EchartsLine(hourModel);
-
     var mapvLayer;
-
-
-
     $('.cluster-confirm').on('click',function(){
         EchartWeek.myChart.resize();
         var category = $('.category-table input').val();
-        // console.log(category);
         var option = $('.category').val();
         var method = $('.method').val();
         const usage = $('.cluster-usage').val();
-        // console.log(option);
-        if(category.length == ''){
+        console.log(category, option, method, usage);
+        if(category === ''){
             alert('请输入K值');
         }else{
             $.ajax({
@@ -45,11 +40,9 @@ $(document).ready(function () {
                 },
                 success: function (data) {
                     console.log(data);
-                    // console.log(data.clusters);
                     const instance = data.clusters.map(item => {
                         return item.slice(0, 3);
                     })
-                    console.log(instance);
                     const listArr = [];
                     for(let i = 0; i < instance.length; i++) {
                         listArr.push({
@@ -77,7 +70,6 @@ $(document).ready(function () {
                             });
                         }
                     }
-                    console.log(listArr);
 
                     layui.use('table', function(){
                         var table = layui.table;
@@ -150,8 +142,6 @@ $(document).ready(function () {
                             alert("Request failed.");
                         },
                         success: function (data) {
-                            // $('#map,#canvas').show();
-                            console.log(data);
                             for(var i=0;i<data.length;i++){
                                 var thiscolor = color.shift();
                                 for (j=0;j<data[i].length;j++){
@@ -175,12 +165,6 @@ $(document).ready(function () {
                                     });
                                 }
                             }
-                            console.log(stations);
-                            // dataSet.set(data); // 修改数据
-
-                            // mapvLayer.show(); // 显示图层
-                            // mapvLayer.hide(); // 删除图层
-
                             if (mapvLayer) {
                                 mapvLayer.destroy();
                             }
@@ -210,7 +194,6 @@ $(document).ready(function () {
 
     EchartWeek.myChart.on('click',function(params){
         $('#hour-model').show();
-        console.log(params.seriesIndex);
         $.ajax({
             type: 'GET',
             url: 'http://127.0.0.1:8082/',
@@ -222,11 +205,9 @@ $(document).ready(function () {
                 alert("Request failed.");
             },
             success: function (data) {
-                console.log(data);
                 const instance = data.clusters.map(item => {
                     return item.slice(0, 3);
                 })
-                console.log(instance);
                 const listArr = [];
                 for(let i = 0; i < instance.length; i++) {
                     listArr.push({
@@ -271,7 +252,6 @@ $(document).ready(function () {
                             });
                     }
                 }
-                console.log(listArr);
                 const color = ['rgba(255,0,0,0.3)','rgba(0,255,0,0.3)','rgba(0,0,255,0.3)','rgba(125,125,0,0.3)','rgba(125,0,125,0.3)','rgba(0,125,125,0.3)'];
                 const stations = [];
                 $.ajax({
@@ -285,8 +265,6 @@ $(document).ready(function () {
                         alert("Request failed.");
                     },
                     success: function (data) {
-                        // $('#map,#canvas').show();
-                        console.log(data);
                         for(var i=0;i<data.length;i++){
                             var thiscolor = color.shift();
                             for (j=0;j<data[i].length;j++){
@@ -310,17 +288,11 @@ $(document).ready(function () {
                                 });
                             }
                         }
-                        console.log(stations);
                         if (mapvLayer) {
                             mapvLayer.destroy();
                         }
                         var dataSet = new mapv.DataSet(stations);
                         mapvLayer = new mapv.baiduMapLayer(map, dataSet);
-
-                        // dataSet.set(data); // 修改数据
-
-                        // mapvLayer.show(); // 显示图层
-                        // mapvLayer.hide(); // 删除图层
                     }
                 });
 
@@ -361,7 +333,6 @@ $(document).ready(function () {
                 EchartHour.option.setXAxis(['6-7','7-8','8-9','9-10','10-11','11-12','12-13','13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21','21-22']);
                 EchartHour.option.clearSeries();
                 for(var i=0;i<data.ave.length;i++){
-                    // console.log(data.ave[i]);
                     EchartHour.option.pushLegendAndSeries(`  第${i+1}类\n总数:${data.clusters[i].length}`,data.ave[i]);
                 }
                 EchartHour.myChart.resize();
@@ -391,11 +362,10 @@ $(document).ready(function () {
                 $('#hour-list').show();
                 $('#hour-list').css('display','flex');
                 radar.myChart.resize();
-                console.log($('#week-model').offset().top +$('#week-model').height());
-                $('html,body').animate({
-                    scrollTop:$('#week-model').offset().top +$('#week-model').height() + 20
-                },300);
-
+                // console.log($('#week-model').offset().top +$('#week-model').height());
+                // $('html,body').animate({
+                //     scrollTop:$('#week-model').offset().top +$('#week-model').height() + 20
+                // },300);
             }
         });
     })

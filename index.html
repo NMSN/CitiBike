@@ -167,7 +167,7 @@
             display: flex;
             flex-direction: column;
             width: 40rem;
-            height: 28rem;
+            height: 40rem;
         }
         .calendar{
             width: 32rem;
@@ -179,7 +179,7 @@
         }
         .hour-chart,.week-chart,.day-chart,.weather-chart{
             width: 100%;
-            height: 20rem;
+            height: 10rem;
         }
         .info-chart{
             width: 20rem;
@@ -216,6 +216,10 @@
             width: 800px;
             height: 400px;
         }
+        #track-map {
+            width: 800px;
+            height: 400px;
+        }
     </style>
 
 
@@ -230,6 +234,7 @@
             <li>聚类</li>
             <li>查询</li>
             <li>热力</li>
+            <li>轨迹</li>
         </ul>
 
         <div class="layui-tab-content">
@@ -307,8 +312,22 @@
             </div>
             <!-- 个人 -->
             <div class="layui-tab-item">
-                <input class="user-search-input">
-                <button class="user-search-button">确定</button>
+                <div class="layui-form-item">
+                        <label class="layui-form-label">时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" id="user-map-time">
+                        </div>
+                    </div>
+                    <!-- <input type="text" class="layui-input" id="heatmap-time"> -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户id</label>
+                        <div class="layui-input-block">
+                            <input type="text" placeholder="请输入" class="layui-input" id="user-map-id">
+                        </div>
+                    </div>
+                    <button class="layui-btn layui-btn-primary" id="user-search-button">查询</button>
+                <!-- <input class="user-search-input">
+                <button class="user-search-button">确定</button> -->
                 <div id="user-map"></div> 
                 <div class="user-lease-bar"></div>
                 <div class="user-return-bar"></div>
@@ -322,19 +341,47 @@
                         <label class="layui-form-label">选择框</label>
                         <div class="layui-input-block">
                             <select name="city" lay-verify="" id="heatmap-type">
-                                <option value="">请选择</option>
-                                <option value="0">借车</option>
-                                <option value="1">还车</option>
+                                <option value="1">借车</option>
+                                <option value="2">还车</option>
                             </select>     
                         </div>
                     </div>
                 </form>
-                <input type="text" class="layui-input" id="heatmap-time">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="heatmap-time">
+                    </div>
+                </div>
+                <!-- <input type="text" class="layui-input" id="heatmap-time"> -->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户id</label>
+                    <div class="layui-input-block">
+                      <input type="text" placeholder="请输入" class="layui-input" id="heatmap-id">
+                    </div>
+                </div>
                 <div id="heat-map"></div> 
                 <div id="r-result">
                     <input type="button"  onclick="openHeatmap();" value="显示热力图"/>
                     <input type="button"  onclick="closeHeatmap();" value="关闭热力图"/>
                 </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="track-map-time">
+                    </div>
+                </div>
+                <!-- <input type="text" class="layui-input" id="heatmap-time"> -->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户id</label>
+                    <div class="layui-input-block">
+                        <input type="text" placeholder="请输入" class="layui-input" id="track-map-id">
+                    </div>
+                </div>
+                <button class="layui-btn layui-btn-primary" id="track-search-button">查询</button>
+                <div id="track-map"></div>
             </div>
         </div>
     </div>
@@ -342,7 +389,7 @@
 
     <script src="lib/jquery-3.2.1.js"></script>
     <script src="lib/echarts.js"></script>
-    <script src="http://api.map.baidu.com/api?v=3.0&ak=cTPMvvh70cpFaigeCtpj6gXOefm0PplL"></script>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=cTPMvvh70cpFaigeCtpj6gXOefm0PplL"></script>
     <script src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
     <script src="http://mapv.baidu.com/build/mapv.min.js"></script>
     <script src="lib/layui/layui.all.js"></script>
@@ -357,6 +404,8 @@
     <script src="stationsMap.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
     <script src="heatMap.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/CurveLine/1.5/src/CurveLine.min.js"></script>
+    <script src="trackMap.js"></script>
     <!-- <script src="table.js"></script> -->
     <script>
         layui.use('element', function(){

@@ -1,3 +1,19 @@
+layui.use('laydate', function(){
+    var laydate = layui.laydate;      
+    laydate.render({
+        elem: '#user-map-time' //指定元素
+        ,type: 'datetime'
+        ,value: '2014-05-01 00:00:00 ~ 2014-05-31 23:59:59'
+      //   ,format: 'yyyy/MM/dd HH:mm:ss - yyyy/MM/dd HH:mm:ss'
+        ,isInitValue: false //是否允许填充初始值，默认为 true
+        ,min: '2014-05-01 00:00:00'
+        ,max: '2014-05-31 23:59:59'
+        ,range: '~'
+    });
+  });
+  layui.use('form', function(){
+      var form = layui.form;
+  });
 const userMap = new BMap.Map("user-map", {
     enableMapClick: false
 });    // 创建Map实例
@@ -13,32 +29,34 @@ var userLeaseBar = $('.user-lease-bar')[0];
 var userReturnBar = $('.user-return-bar')[0];
 
 var EchartUserLease = new EchartsBar(userLeaseBar);
-var EchartUserReturn = new EchartsBar(userReturnBar);
+EchartUserLease.option.setTitle('借车站点TOP');
 
-$('.user-search-button').on('click',function(){
-    const inputValue = $('.user-search-input').val();
-    // console.log(inputValue);
-    var color = ['rgba(255,0,0,0.3)','rgba(0,255,0,0.3)','rgba(0,0,255,0.3)','rgba(125,125,0,0.3)','rgba(125,0,125,0.3)','rgba(0,125,125,0.3)'];
+var EchartUserReturn = new EchartsBar(userReturnBar);
+EchartUserReturn.option.setTitle('还车站点TOP');
+EchartUserReturn.option.setColor('blue');
+
+$('#user-search-button').on('click',function(){
+    const userMapId = $('#user-map-id').val();
+    const userMapTime = $('#user-map-time').val();
+    if (userMapId === '') {
+        alert('请输入用户编号');
+        return false;
+    }
     var stations = [];
     $.ajax({
         type: 'GET',
         url: 'http://127.0.0.1:8082/',
         data: {
-            usrIndex: inputValue,
+            userId: userMapId,
+            userMapTime: userMapTime, 
         },
         dataType: 'json',
         error: function () {
             alert("Request failed.");
         },
         success: function (data) {
-            console.log(data);
-            console.log(EchartUserLease.option);
             EchartUserLease.option.clearSeries();
-            // for(var i=0;i<data.length;i++){
-                // var thiscolor = color.shift();
-                let leaseColor = color.shift();
                 const barArrLease = [];
-                // EchartUserLease.option.title = "借车站点图";
                 for (let j=0;j<data.lease.length;j++){
                     stations.push({
                         geometry: {
@@ -46,7 +64,7 @@ $('.user-search-button').on('click',function(){
                             coordinates: [data.lease[j].BAIDU_X,data.lease[j].BAIDU_Y]
                         },
                         size: data.lease[j].SUM*1,
-                        fillStyle: leaseColor,
+                        fillStyle: 'rgba(255,0,0,0.3)',
                         shadowColor: 'rgba(255, 50, 50, 1)',
                         // globalAlpha: 0.5, // 透明度
                         shadowBlur: 30,
@@ -61,15 +79,12 @@ $('.user-search-button').on('click',function(){
                     if(j < 10) {
                         EchartUserLease.option.pushXAxis(data.lease[j].STATIONNAME);
                         console.log(data.lease[j].SUM*1, data.lease[j].STATIONNAME);
-                        
                         barArrLease.push(data.lease[j].SUM*1);
                     }
 
                 }
-                // console.log(barArr);
                 EchartUserLease.option.setSeries(barArrLease);
-                let returnColor = color.shift();
-                console.log(leaseColor,returnColor);
+
                 EchartUserReturn.option.clearSeries();
                 const barArrReturn = [];
                 for (let j=0;j<data.return.length;j++){
@@ -79,7 +94,7 @@ $('.user-search-button').on('click',function(){
                             coordinates: [data.return[j].BAIDU_X,data.return[j].BAIDU_Y]
                         },
                         size: data.return[j].SUM*1,
-                        fillStyle: returnColor,
+                        fillStyle: 'rgba(0,0,255,0.3)',
                         shadowColor: 'rgba(255, 50, 50, 1)',
                         // globalAlpha: 0.5, // 透明度
                         shadowBlur:30,
@@ -93,13 +108,9 @@ $('.user-search-button').on('click',function(){
                     });
                     if(j < 10) {
                         EchartUserReturn.option.pushXAxis(data.return[j].STATIONNAME);
-                        console.log(data.return[j].SUM*1, data.return[j].STATIONNAME);
-                        
                         barArrReturn.push(data.return[j].SUM*1);
                     }
                 }
-                console.log(stations);
-                
                 EchartUserReturn.option.setSeries(barArrReturn);
             // }
             var dataSet = new mapv.DataSet(stations);
