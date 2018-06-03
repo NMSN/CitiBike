@@ -40,7 +40,9 @@ $('#track-search-button').on('click',function() {
         const curveArr =[];
         const leaseStations = [];
         const returnStations =[];
+        let sum = 0;
         for (let i=0;i<data.length;i++) {
+          
           const curveObj = {};
           for (let j=0;j<stations.length;j++) {
             if(data[i].LEASESTATION === stations[j].stationId) {
@@ -96,6 +98,7 @@ $('#track-search-button').on('click',function() {
             });
             }
           }
+          sum += data[i].sum;
           curveObj.sum = data[i].sum;
           curveArr.push(curveObj);
           if (curveObj.lease && curveObj.return) {
@@ -109,6 +112,7 @@ $('#track-search-button').on('click',function() {
           }
         }
         console.log(curveArr);
+        console.log('sum',sum);
         var dataSet = new mapv.DataSet([...leaseStations,...returnStations]);
         var mapvLayer = new mapv.baiduMapLayer(trackMap, dataSet);
       }
