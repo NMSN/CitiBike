@@ -128,7 +128,7 @@ $(document).ready(function () {
                     $('#week-list').css('display','flex');
                     radar.myChart.resize();
 
-                    const color = ['rgba(255,0,0,0.3)','rgba(0,255,0,0.3)','rgba(0,0,255,0.3)','rgba(125,125,0,0.3)','rgba(125,0,125,0.3)','rgba(0,125,125,0.3)'];
+                    const color = ['rgba(255,0,0,0.3)','rgba(0,255,0,0.3)','rgba(85,85,255,0.3)','rgba(125,125,0,0.3)','rgba(125,0,125,0.3)','rgba(0,125,125,0.3)'];
                     var stations = [];
 
                     $.ajax({
@@ -168,13 +168,10 @@ $(document).ready(function () {
                             if (mapvLayer) {
                                 mapvLayer.destroy();
                             }
-                            var dataSet = new mapv.DataSet(stations);
+                            const dataSet = new mapv.DataSet(stations);
                             mapvLayer = new mapv.baiduMapLayer(map, dataSet);
                         }
                     });
-                    $('html,body').animate({
-                        scrollTop:$('#bar-chart').offset().top + $('#bar-chart').height() + 20
-                    },300);
                     $('#hour-model').hide();
                     $('#hour-list').hide();
                 }
@@ -252,7 +249,7 @@ $(document).ready(function () {
                             });
                     }
                 }
-                const color = ['rgba(255,0,0,0.3)','rgba(0,255,0,0.3)','rgba(0,0,255,0.3)','rgba(125,125,0,0.3)','rgba(125,0,125,0.3)','rgba(0,125,125,0.3)'];
+                const color = ['rgba(255,0,0,0.3)','rgba(0,255,0,0.3)','rgba(85,85,255,0.3)','rgba(125,125,0,0.3)','rgba(125,0,125,0.3)','rgba(0,125,125,0.3)'];
                 const stations = [];
                 $.ajax({
                     type: 'GET',
@@ -291,7 +288,7 @@ $(document).ready(function () {
                         if (mapvLayer) {
                             mapvLayer.destroy();
                         }
-                        var dataSet = new mapv.DataSet(stations);
+                        const dataSet = new mapv.DataSet(stations);
                         mapvLayer = new mapv.baiduMapLayer(map, dataSet);
                     }
                 });
